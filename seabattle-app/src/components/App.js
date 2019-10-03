@@ -15,12 +15,12 @@ class App extends Component {
 
           <div className="bfield bfield1">
             <p className="btext btext1">Игрок 1: <span id="username1">Юзер</span></p>
-            {Field}
+            {/* Field */}
           </div>
 
           <div className="bfield bfield2">
             <p className="btext btext2">Игрок 2: <span>Компьютер</span></p>
-            {Field}
+            
           </div>
 
         </div>
