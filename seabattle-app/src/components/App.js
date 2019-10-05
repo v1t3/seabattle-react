@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import Field from './Field'
+import Field from './Field/'
 import './style.css'
 
 class App extends Component {
@@ -13,15 +13,9 @@ class App extends Component {
         <h3 id="text_top" className="text-top">Игра "Морской бой"</h3>
         <div className="field-wrap">
 
-          <div className="bfield bfield1">
-            <p className="btext btext1">Игрок 1: <span id="username1">Юзер</span></p>
-            {/* Field */}
-          </div>
+          <Field playerState='user' />
 
-          <div className="bfield bfield2">
-            <p className="btext btext2">Игрок 2: <span>Компьютер</span></p>
-            
-          </div>
+          <Field playerState='pc' />
 
         </div>
 
