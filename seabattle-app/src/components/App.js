@@ -1,7 +1,13 @@
 import React, {Component} from 'react'
 import Field from './Field/'
+import PlaceShips from './PlaceShips'
+import StartGame from './StartGame'
+import Rules from './Rules'
+import PopupName from './PopupName'
+import Ships from './Ships'
 import './style.css'
 
+export default 
 class App extends Component {
   state = {
     reverted: false
@@ -12,23 +18,21 @@ class App extends Component {
       <div className="wrap">
         <h3 id="text_top" className="text-top">Игра "Морской бой"</h3>
         <div className="field-wrap">
-
           <Field playerState='user' />
-
           <Field playerState='pc' />
-
-        </div>
-
+        </div>        
+        
         <div id="control_btns" className="control-btns" data-hidden="false">
-          <span className="link-random" id="random" data-target="random" data-hidden="false">Расставить корабли</span>
-          <span id="play" className="btn-play" data-hidden="true">Играть</span>
+          <PlaceShips />
+          <StartGame />
         </div>
 
         <div id="text_btm" className="text-btm"></div>
-        
+
+        <Rules/>
+        <PopupName/>
+        <Ships/>
       </div>
     )
   }
 }
-
-export default App
