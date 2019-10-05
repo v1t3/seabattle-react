@@ -40,61 +40,6 @@ p {
 	margin-bottom: 10px;
 }
 
-/*** CONTENT ***/
-.field-wrap {
-	justify-content: center;
-	height: auto;
-	position: relative;
-	margin: 0 auto;
-	display: flex;
-}
-
-.bfield2 {
-	margin-left: 30px;
-}
-
-.text-top {
-	height: 66px;
-	font-size: 22px;
-	line-height: 66px;
-	text-align: center;
-	margin-bottom: 7px;
-}
-.text-btm {
-	color: #c00;
-	text-align: center;
-	padding-top: 10px;
-}
-
-.field {
-	width: 366px;
-	height: 363px;
-	position: relative;
-}
-
-.top-nums {
-	display: flex;
-	font-weight: bold;
-	margin-left: 28px;
-}
-.top-num {
-	width: 10%;
-	font-size: 18px;
-	text-align: center;
-}
-.left-nums {
-	float: left;
-	display: flex;
-	flex-direction: column;
-	font-weight: bold;
-	height: 93%;
-}
-.left-num {
-	display: flex;
-	align-items: center;
-	height: 10%;
-}
-
 .ships {
 	position: relative;
 	width: 92%;
