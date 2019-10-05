@@ -3,7 +3,7 @@ import Field from './Field/'
 import PlaceShips from './PlaceShips'
 import StartGame from './StartGame'
 import Rules from './Rules'
-import PopupName from './PopupName'
+// import PopupName from './PopupName'
 import Ships from './Ships'
 import './style.css'
 
@@ -30,7 +30,7 @@ class App extends Component {
         <div id="text_btm" className="text-btm"></div>
 
         <Rules/>
-        <PopupName/>
+        {/* <PopupName/> */}
         <Ships/>
       </div>
     )
