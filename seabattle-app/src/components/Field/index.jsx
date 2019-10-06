@@ -5,12 +5,7 @@ class Field extends Component {
   
   render() {
     const {playerState} = this.props;
-    let playerNum,
-        playerName,
-        fieldClasses,
-        fiedlTextClasses,
-        fieldUserId,
-        playerId;
+    let playerNum, playerName;
 
     if (playerState === "user") {
       playerNum = "1";
@@ -20,16 +15,11 @@ class Field extends Component {
       playerNum = "2";
       playerName = "Комп";
     }
-
-    fieldClasses = '"bfield bfield' + playerNum + '"';
-    fiedlTextClasses = '"btext btext' + playerNum + '"';
-    fieldUserId = '"field_user' + playerNum + '"';
-    playerId = '"username' + playerNum + '"';
     
     return (
-      <div className={fieldClasses}>
-          <p className={fiedlTextClasses}>
-            Игрок {playerNum}: <span id={playerId}> {playerName}</span>
+      <div className={'bfield bfield' + playerNum}>
+          <p className={'btext btext' + playerNum}>
+            Игрок {playerNum}: <span id={'username' + playerNum}> {playerName}</span>
           </p>
         <div className="field field-user">
           <div className="top-nums">
@@ -56,11 +46,13 @@ class Field extends Component {
             <div className="left-num left-num9">И</div>
             <div className="left-num left-num10">К</div>
           </div>
-          <div id={fieldUserId} className="ships"></div>
+          <div id={'field_user' + playerNum} className="ships"></div>
         </div>
       </div>
     )
   }
 }
+
+
 
 export default Field
