@@ -4,6 +4,7 @@ export default
 class PopupName extends Component {
   constructor(props) {
     super(props);
+    
     this.state = {
       value: ''
     };
