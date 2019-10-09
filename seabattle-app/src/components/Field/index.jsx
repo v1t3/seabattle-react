@@ -1,5 +1,8 @@
 import React, {Component} from 'react'
 import './style.css'
+import Ships from '../Ships'
+import getRandom from '../getRandom'
+import createMatrix from '../createMatrix'
 
 export default
 class Field extends Component {
