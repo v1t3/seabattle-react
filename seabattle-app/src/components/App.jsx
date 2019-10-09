@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
 import Field from './Field/'
+import './style.css'
 import PlaceShips from './PlaceShips'
 import StartGame from './StartGame'
 import Rules from './Rules'
-import PopupName from './PopupName'
+// import PopupName from './PopupName'
 import Ships from './Ships'
-import './style.css'
+import Controller from './Controller'
+import getId from './getId'
 
 export default 
 class App extends Component {
@@ -30,9 +32,10 @@ class App extends Component {
         <div id="text_btm" className="text-btm"></div>
 
         <Rules/>
-        <PopupName/>
+        {/* <PopupName/> */}
         <Ships/>
       </div>
     )
   }
 }
+
