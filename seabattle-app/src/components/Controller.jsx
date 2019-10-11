@@ -1,5 +1,5 @@
 import React from 'react'
-import './globals'
+// import './globals'
 
 export default
 class Controller extends React.Component {

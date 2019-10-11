@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import App from './App'
-import './globals'
+// import './globals'
 
 export default 
 class Rules extends Component {

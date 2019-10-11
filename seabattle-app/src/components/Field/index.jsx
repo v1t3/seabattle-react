@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import './style.css'
 import Ships from '../Ships'
 // import createMatrix from '../createMatrix'
-import '../globals'
+// import '../globals'
 import App from '../App'
 
 export default
