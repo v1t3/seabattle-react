@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+import App from './App'
+import './globals'
 
 export default 
 class Rules extends Component {
@@ -45,10 +47,10 @@ class Rules extends Component {
 		// заносим информацию о созданном корабле в массив флот
 		player.flot.push(this);
 		// если корабль создан для игрока, выводим его на экран
-		if (player == user) this.showShip();
+		if (player == user1) this.showShip();
 		// когда созданы все корабли (10 шт), показываем кнопку запуска игры
-		if (user.flot.length == 10) {
-			getId('play').setAttribute('data-hidden', 'false');
+		if (user1.flot.length == 10) {
+			App.getId('play').setAttribute('data-hidden', 'false');
 		}
 	}
 

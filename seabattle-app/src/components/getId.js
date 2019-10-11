@@ -1,4 +1,4 @@
 
-function getId(id) {
-	return document.getElementById(id);
-}
+// function getId(id) {
+// 	return document.getElementById(id);
+// }

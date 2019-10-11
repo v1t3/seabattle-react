@@ -1,18 +1,36 @@
 import React, {Component} from 'react'
 import Field from './Field/'
-import './style.css'
 import PlaceShips from './PlaceShips'
 import StartGame from './StartGame'
 import Rules from './Rules'
-// import PopupName from './PopupName'
 import Ships from './Ships'
-import Controller from './Controller'
-import getId from './getId'
+import './style.css'
+import './globals'
 
 export default 
 class App extends Component {
   state = {
-    reverted: false
+    user1: null,
+    user2: null
+  }
+
+  getId(id) {
+    return document.getElementById(id);
+  }
+
+  getRandom(n) {
+    return Math.floor(Math.random() * (n + 1));
+  }
+
+  createMatrix() {
+    let x = 10, y = 10, arr = [10];
+    for (let i = 0; i < x; i++) {
+      arr[i] = [10];
+      for(let j = 0; j < y; j++) {
+        arr[i][j] = 0;
+      }
+    }
+    return arr;
   }
   
   render() {

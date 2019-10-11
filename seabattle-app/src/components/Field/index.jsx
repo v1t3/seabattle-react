@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import './style.css'
 import Ships from '../Ships'
-import getRandom from '../getRandom'
-import createMatrix from '../createMatrix'
+// import createMatrix from '../createMatrix'
+import '../globals'
+import App from '../App'
 
 export default
 class Field extends Component {
@@ -27,7 +28,7 @@ class Field extends Component {
 	}
 
 	randomLocationShips = function() {
-		this.matrix = createMatrix();
+		this.matrix = App.createMatrix();
 	
 		let length = this.shipsData.length;
 		for (let i = 1; i < length; i++) {
@@ -47,15 +48,15 @@ class Field extends Component {
 	}
 
 	getCoordinatesDecks = function(decks) {
-		let dir = getRandom(1),
+		let dir = App.getRandom(1),
 				x, y;
 	
 		if (dir == 0) {
-			x = getRandom(9);
-			y = getRandom(10 - decks);
+			x = App.getRandom(9);
+			y = App.getRandom(10 - decks);
 		} else {
-			x = getRandom(10 - decks);
-			y = getRandom(9);
+			x = App.getRandom(10 - decks);
+			y = App.getRandom(9);
 		}
 	
 		let result = this.checkLocationShip(x, y, dir, decks);
