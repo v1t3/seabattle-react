@@ -7,7 +7,10 @@ export default
 class Field extends Component {
 	constructor(props) {
     super(props);
-		const {field} = this.props;
+		const {field, playerNum, playerName} = this.props;
+	
+		this.playerNum = playerNum;
+		this.playerName = playerName;
 
 		this.fieldSide = 330;
 		this.shipSide	= 33;
@@ -26,6 +29,7 @@ class Field extends Component {
 		this.fieldBtm	= this.fieldX + this.fieldSide;
 		this.flot	= [];
 	}
+
 
 	// randomLocationShips = function() {
 	// 	this.matrix = App.createMatrix();
@@ -51,7 +55,7 @@ class Field extends Component {
 		let dir = App.getRandom(1),
 				x, y;
 	
-		if (dir == 0) {
+		if (dir === 0) {
 			x = App.getRandom(9);
 			y = App.getRandom(10 - decks);
 		} else {
@@ -72,27 +76,27 @@ class Field extends Component {
 
 	checkLocationShip = function(x, y, dir, decks) {
 		let fromX, toX, fromY, toY;
-		fromX = (x == 0) ? x : x - 1;
-		fromY = (y == 0) ? y : y - 1;
+		fromX = (x === 0) ? x : x - 1;
+		fromY = (y === 0) ? y : y - 1;
 	
-		if (dir == 1) {
-			if (x + decks == 10) toX = x + decks;
+		if (dir === 1) {
+			if (x + decks === 10) toX = x + decks;
 			else toX = x + decks + 1;
 	
-			if (y == 9) toY = y + 1;
+			if (y === 9) toY = y + 1;
 			else toY = y + 2;
 		} else {
-			if (x == 9) toX = x + 1;
+			if (x === 9) toX = x + 1;
 			else toX = x + 2;
 	
-			if (y + decks == 10) toY = y + decks;
+			if (y + decks === 10) toY = y + decks;
 			else toY = y + decks + 1;
 		}
 	
 		// make func
 		for (let i = fromX; i < toX; i++) {
 			for (let j = fromY; j < toY; j++) {
-				if (this.matrix[i][j] == 1) return false;
+				if (this.matrix[i][j] === 1) return false;
 			}
 		}
 
@@ -116,22 +120,10 @@ class Field extends Component {
 
   
   render() {
-    const {playerState} = this.props;
-    let playerNum, playerName;
-
-    if (playerState === "user") {
-      playerNum = "1";
-      playerName = "Юзер";
-    }
-    if (playerState === "pc") {
-      playerNum = "2";
-      playerName = "Комп";
-    }
-    
     return (
-      <div className={'bfield bfield' + playerNum}>
-          <p className={'btext btext' + playerNum}>
-            Игрок {playerNum}: <span id={'username' + playerNum}> {playerName}</span>
+      <div className={'bfield bfield' + this.playerNum}>
+          <p className={'btext btext' + this.playerNum}>
+            Игрок {this.playerNum}: <span id={'username' + this.playerNum}> {this.playerName}</span>
           </p>
         <div className="field field-user">
           <div className="top-nums">
@@ -158,7 +150,7 @@ class Field extends Component {
             <div className="left-num left-num9">И</div>
             <div className="left-num left-num10">К</div>
           </div>
-          <div id={'field_user' + playerNum} className="ships"></div>
+          <div id={'field_user' + this.playerNum} className="ships"></div>
         </div>
       </div>
     )

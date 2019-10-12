@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import './style.css'
 import Field from './Field/'
-// import PlaceShips from './PlaceShips'
-// import StartGame from './StartGame'
+import PlaceShips from './PlaceShips'
+import StartGame from './StartGame'
 // import Rules from './Rules'
 // import Ships from './Ships'
 
@@ -64,22 +64,19 @@ class App extends Component {
   //   //   App.getId('popup').setAttribute('data-hidden',true);
   //   // });    
   // }
-  
+
   render() {
     return (
       <div className="wrap">
         <h3 id="text_top" className="text-top">Игра "Морской бой"</h3>
         <div className="field-wrap">
-          <Field playerState='user' />
-          <Field playerState='pc' />
+          <Field playerNum="1" playerName="Юзер" />
+          <Field playerNum="2" playerName="Комп" />
         </div>        
         
-        <div id="control_btns" className="control-btns" data-hidden="false">
-          {/* <PlaceShips /> */}
-          <span className="link-random" id="random" data-target="random" data-hidden="false">Расставить корабли</span>
-          {/* <StartGame /> */}
-          <span id="play" className="btn-play" data-hidden="true">Играть</span>
-        </div>
+        <PlaceShips />
+        
+        <StartGame />
 
         <div id="text_btm" className="text-btm"></div>
 
@@ -89,5 +86,5 @@ class App extends Component {
       </div>
     )
   }
+  
 }
-
