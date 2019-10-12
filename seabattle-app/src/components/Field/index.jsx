@@ -1,8 +1,6 @@
 import React, {Component} from 'react'
 import './style.css'
-import Ships from '../Ships'
-// import createMatrix from '../createMatrix'
-// import '../globals'
+// import Ships from '../Ships'
 import App from '../App'
 
 export default
@@ -20,32 +18,34 @@ class Field extends Component {
 											[1, 'singledeck']
 										];
 		this.field = field;
-		this.fieldX = field.getBoundingClientRect().top + window.pageYOffset;
-		this.fieldY = field.getBoundingClientRect().left + window.pageXOffset;
+		// this.fieldX = field.getBoundingClientRect().top + window.pageYOffset;
+		// this.fieldY = field.getBoundingClientRect().left + window.pageXOffset;
+		this.fieldX = window.pageYOffset;
+		this.fieldY = window.pageXOffset;
 		this.fieldRight	= this.fieldY + this.fieldSide;
 		this.fieldBtm	= this.fieldX + this.fieldSide;
 		this.flot	= [];
 	}
 
-	randomLocationShips = function() {
-		this.matrix = App.createMatrix();
+	// randomLocationShips = function() {
+	// 	this.matrix = App.createMatrix();
 	
-		let length = this.shipsData.length;
-		for (let i = 1; i < length; i++) {
-			let decks = this.shipsData[i][0];
+	// 	let length = this.shipsData.length;
+	// 	for (let i = 1; i < length; i++) {
+	// 		let decks = this.shipsData[i][0];
 	
-			for (let j = 0; j < i; j++) {
+	// 		for (let j = 0; j < i; j++) {
 				
-				let fieldCoord = this.getCoordinatesDecks(decks);
+	// 			let fieldCoord = this.getCoordinatesDecks(decks);
 	
-				fieldCoord.decks = decks,
-				fieldCoord.shipname	= this.shipsData[i][1] + String(j + 1);
+	// 			fieldCoord.decks = decks,
+	// 			fieldCoord.shipname	= this.shipsData[i][1] + String(j + 1);
 	
-				let ship = new Ships(this, fieldCoord);
-				ship.createShip();
-			}
-		}
-	}
+	// 			let ship = new Ships(this, fieldCoord);
+	// 			ship.createShip();
+	// 		}
+	// 	}
+	// }
 
 	getCoordinatesDecks = function(decks) {
 		let dir = App.getRandom(1),
