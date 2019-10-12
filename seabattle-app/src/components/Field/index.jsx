@@ -11,7 +11,6 @@ class Field extends Component {
 	
 		this.playerNum = playerNum;
 		this.playerName = playerName;
-
 		this.fieldSide = 330;
 		this.shipSide	= 33;
 		this.shipsData = ['',

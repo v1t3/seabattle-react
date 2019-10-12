@@ -13,7 +13,7 @@ export default class PlaceShips extends Component {
               id="random" 
               data-target="random" 
               data-hidden="false"
-              onClick={this.hendlerClick}  //должно обращаться к Field
+              onClick={this.hendlerClick}
         >
           Расставить корабли
         </span>
