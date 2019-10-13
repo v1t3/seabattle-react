@@ -49,7 +49,7 @@
 // 		if (player == user1) this.showShip();
 // 		// когда созданы все корабли (10 шт), показываем кнопку запуска игры
 // 		if (user1.flot.length == 10) {
-// 			App.getId('play').setAttribute('data-hidden', 'false');
+// 			document.getElementById('play').setAttribute('data-hidden', 'false');
 // 		}
 // 	}
 

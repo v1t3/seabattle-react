@@ -1,128 +1,51 @@
 import React, {Component} from 'react'
 import './style.css'
 // import Ships from '../Ships'
-import App from '../App'
+import PlaceShips from '../PlaceShips'
 
 export default
 class Field extends Component {
 	constructor(props) {
     super(props);
-		const {field, playerNum, playerName} = this.props;
-	
-		this.playerNum = playerNum;
-		this.playerName = playerName;
-		this.fieldSide = 330;
-		this.shipSide	= 33;
-		this.shipsData = ['',
-											[4, 'fourdeck'],
-											[3, 'tripledeck'],
-											[2, 'doubledeck'],
-											[1, 'singledeck']
-										];
-		this.field = field;
-		// this.fieldX = field.getBoundingClientRect().top + window.pageYOffset;
-		// this.fieldY = field.getBoundingClientRect().left + window.pageXOffset;
-		this.fieldX = window.pageYOffset;
-		this.fieldY = window.pageXOffset;
-		this.fieldRight	= this.fieldY + this.fieldSide;
-		this.fieldBtm	= this.fieldX + this.fieldSide;
-		this.flot	= [];
+		const {user, playerNum, playerName} = this.props;
+		
+		this.state = {
+			user: user,
+			playerNum: playerNum,
+			playerName: playerName,
+			fieldSide: 330,
+			shipSide: 33,
+			shipsData: ['',
+												[4, 'fourdeck'],
+												[3, 'tripledeck'],
+												[2, 'doubledeck'],
+												[1, 'singledeck']
+											],
+			field: null,
+			// fieldX: field.getBoundingClientRect().top + window.pageYOffset,
+			// fieldY: field.getBoundingClientRect().left + window.pageXOffset,
+			fieldX: window.pageYOffset,
+			fieldY: window.pageXOffset,
+			fieldRight: this.fieldY + this.fieldSide,
+			fieldBtm: this.fieldX + this.fieldSide,
+			flot: []
+		}
 	}
 
-
-	// randomLocationShips = function() {
-	// 	this.matrix = App.createMatrix();
-	
-	// 	let length = this.shipsData.length;
-	// 	for (let i = 1; i < length; i++) {
-	// 		let decks = this.shipsData[i][0];
-	
-	// 		for (let j = 0; j < i; j++) {
-				
-	// 			let fieldCoord = this.getCoordinatesDecks(decks);
-	
-	// 			fieldCoord.decks = decks,
-	// 			fieldCoord.shipname	= this.shipsData[i][1] + String(j + 1);
-	
-	// 			let ship = new Ships(this, fieldCoord);
-	// 			ship.createShip();
-	// 		}
-	// 	}
-	// }
-
-	getCoordinatesDecks = function(decks) {
-		let dir = App.getRandom(1),
-				x, y;
-	
-		if (dir === 0) {
-			x = App.getRandom(9);
-			y = App.getRandom(10 - decks);
-		} else {
-			x = App.getRandom(10 - decks);
-			y = App.getRandom(9);
-		}
-	
-		let result = this.checkLocationShip(x, y, dir, decks);
-		if (!result) return this.getCoordinatesDecks(decks);
-	
-		let obj = {
-			x: x,
-			y: y,
-			dir: dir
-		};
-		return obj;
-	}
-
-	checkLocationShip = function(x, y, dir, decks) {
-		let fromX, toX, fromY, toY;
-		fromX = (x === 0) ? x : x - 1;
-		fromY = (y === 0) ? y : y - 1;
-	
-		if (dir === 1) {
-			if (x + decks === 10) toX = x + decks;
-			else toX = x + decks + 1;
-	
-			if (y === 9) toY = y + 1;
-			else toY = y + 2;
-		} else {
-			if (x === 9) toX = x + 1;
-			else toX = x + 2;
-	
-			if (y + decks === 10) toY = y + decks;
-			else toY = y + decks + 1;
-		}
-	
-		// make func
-		for (let i = fromX; i < toX; i++) {
-			for (let j = fromY; j < toY; j++) {
-				if (this.matrix[i][j] === 1) return false;
-			}
-		}
-
-		return true;
-	}
-
-	cleanField = function() {
-		let parent	= this.field,
-				id = parent.getAttribute('id'),
-				// получаем коллекцию все кораблей, которые нужно удалить
-				divs = document.querySelectorAll(`#${id} > div`);
-	
-		// перебираем в цикле полученную коллекцию и удаляем входящие в неё корабли
-		for (let el of divs) {
-			parent.removeChild(el);
-		}
-	
-		// очищаем массив объектов кораблей
-		this.flot.length = 0;
-	}
+	setUserfield = function(data) {
+		console.log('parent setUserfield=', data);
+		
+		this.setState({field: data});
+		console.log('new field=', this.state.field);
+	}.bind(this);
 
   
   render() {
     return (
-      <div className={'bfield bfield' + this.playerNum}>
-          <p className={'btext btext' + this.playerNum}>
-            Игрок {this.playerNum}: <span id={'username' + this.playerNum}> {this.playerName}</span>
+      <div className={'bfield bfield' + this.state.playerNum}>
+          <p className={'btext btext' + this.state.playerNum}>
+            Игрок {this.state.playerNum}: 
+						<span id={'username' + this.state.playerNum}> {this.state.playerName}</span>
           </p>
         <div className="field field-user">
           <div className="top-nums">
@@ -149,9 +72,18 @@ class Field extends Component {
             <div className="left-num left-num9">И</div>
             <div className="left-num left-num10">К</div>
           </div>
-          <div id={'field_user' + this.playerNum} className="ships"></div>
+          <div id={'field_user' + this.state.playerNum} className="ships"></div>
         </div>
+				
+			<PlaceShips user={this.state.user} 
+									field={this.state.field} 
+									setUserfield={this.setUserfield}
+									flot={this.state.flot}
+                  key={this.state.field}
+                  state={this.state} />
+			{console.log('field1=', this.state.field)}
       </div>
+			
     )
   }
 }

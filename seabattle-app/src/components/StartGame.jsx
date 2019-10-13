@@ -2,8 +2,21 @@ import React, {Component} from 'react'
 
 export default class StartGame extends Component {
   
-	hendlerClick = () => {
-		console.log('clicked StartGame')
+	playClick = () => {
+    console.log('clicked StartGame')
+    
+    // // создаём объект поля компьютера и расставляем корабли
+    // document.getElementById('play').addEventListener('click', function(e) {
+    //   user2 = new Field(userfield2);
+    //   user2.randomLocationShips();
+    
+    //   // скрываем кнопки расстановки кораблей и запуска игры
+    //   document.getElementById('control_btns').setAttribute('data-hidden', true);
+    
+    //   // Запуск игры
+    //   let battle = new Controller();
+    //   battle.init();
+    // });
 	}
   
   render() {
@@ -12,7 +25,7 @@ export default class StartGame extends Component {
         <span id="play" 
               className="btn-play" 
               data-hidden="false" 
-              onClick={this.hendlerClick}
+              onClick={this.playClick}
         >
           Играть
         </span>
