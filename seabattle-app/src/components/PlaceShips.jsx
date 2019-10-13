@@ -165,8 +165,7 @@ export default class PlaceShips extends Component {
       console.log('userfield1=', userfield1);
 
       this.props.setUserfield(userfield1);
-      // this.setState({field: document.getElementById('field_user1')});
-      console.log('child setUserfield');
+      // console.log('child setUserfield');
 
       console.log('clicked PlaceShips');
       const user = this.props.user;
