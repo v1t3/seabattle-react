@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-// import Field from './Field/'
+import Ships from './Ships'
 
 export default class PlaceShips extends Component {
   
@@ -30,7 +30,8 @@ export default class PlaceShips extends Component {
           // console.log('fieldCoord.decks=', fieldCoord.decks);
           // console.log('fieldCoord.shipname=', fieldCoord.shipname);
     
-          // let ship = new Ships(this, fieldCoord);
+          let ship = new Ships(this, fieldCoord);
+          console.log('ship=', ship);
           // ship.createShip();
         }
       }
@@ -160,6 +161,9 @@ export default class PlaceShips extends Component {
 
 
 	randomClick = () => {
+    console.log('');
+    console.log('clicked PlaceShips');
+
     try {
       let userfield1 = document.getElementById('field_user1');
       console.log('userfield1=', userfield1);
@@ -167,7 +171,6 @@ export default class PlaceShips extends Component {
       this.props.setUserfield(userfield1);
       // console.log('child setUserfield');
 
-      console.log('clicked PlaceShips');
       const user = this.props.user;
       console.log('user= ',user);
       
