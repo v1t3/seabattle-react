@@ -10,7 +10,7 @@ export default class PlaceShips extends Component {
     console.log('this.state=', this.props.state);
 
     try {
-      this.matrix = this.createMatrix();
+      this.matrix = this.createMatrix();  // заполняем базу нулями
       const state = this.props.state;
     
       let length = state.shipsData.length;
@@ -36,15 +36,16 @@ export default class PlaceShips extends Component {
             dir: fieldCoord.dir,
             decks, 
             player: state.user,
-            shipname: fieldCoord.shipname
+            shipname: fieldCoord.shipname,
+            shipSide: state.shipSide,
+            flot: state.flot,
+            matrix: this.matrix
           });
           console.log('ship=', ship);
           console.log('state.field=', state.field);
+          
           ship.createShip();
           ship.showShip();
-          
-          // let ship = <Ships player={this} fieldCoord={fieldCoord}/>
-          // console.log('ship=', ship);
         }
       }
     } catch(err) {
@@ -88,30 +89,40 @@ export default class PlaceShips extends Component {
     // console.log('checkLocationShip');
 
     try {
-      // let fromX, toX, fromY, toY;
-      // fromX = (x === 0) ? x : x - 1;
-      // fromY = (y === 0) ? y : y - 1;
+      let fromX, toX, fromY, toY;
+      // console.log('x=', x);
+      // console.log('y=', y);
+      // console.log('dir=', dir);
+      // console.log('decks=', decks);
+
+      fromX = (x === 0) ? x : x - 1;
+      fromY = (y === 0) ? y : y - 1;
+      // console.log('fromX=', fromX);
+      // console.log('fromY=', fromY);
     
-      // if (dir === 1) {
-      // 	if (x + decks === 10) toX = x + decks;
-      // 	else toX = x + decks + 1;
+      if (dir === 1) {
+      	if (x + decks === 10) toX = x + decks;
+      	else toX = x + decks + 1;
     
-      // 	if (y === 9) toY = y + 1;
-      // 	else toY = y + 2;
-      // } else {
-      // 	if (x === 9) toX = x + 1;
-      // 	else toX = x + 2;
+      	if (y === 9) toY = y + 1;
+      	else toY = y + 2;
+      } else {
+      	if (x === 9) toX = x + 1;
+      	else toX = x + 2;
     
-      // 	if (y + decks === 10) toY = y + decks;
-      // 	else toY = y + decks + 1;
-      // }
+      	if (y + decks === 10) toY = y + decks;
+      	else toY = y + decks + 1;
+      }
+      // console.log('toX=', toX);
+      // console.log('toY=', toY);
     
-      // // make func
-      // for (let i = fromX; i < toX; i++) {
-      // 	for (let j = fromY; j < toY; j++) {
-      // 		if (this.matrix[i][j] === 1) return false;
-      // 	}
-      // }
+      // make func
+        // console.log('matrix[i][j]=', this.matrix);
+      for (let i = fromX; i < toX; i++) {
+      	for (let j = fromY; j < toY; j++) {
+      		if (this.matrix[i][j] === 1) return false;
+      	}
+      }
 
       return true;
     } catch(err) {

@@ -33,10 +33,10 @@ class Field extends Component {
 	}
 
 	setUserfield = function(data) {
-		console.log('parent setUserfield=', data);
+		// console.log('parent setUserfield=', data);
 		
 		this.setState({field: data});
-		console.log('new field=', this.state.field);
+		// console.log('new field=', this.state.field);
 	}.bind(this);
 
   
