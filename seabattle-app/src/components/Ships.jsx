@@ -72,9 +72,9 @@ export default class Ships extends Component {
       div.style.cssText = `left: ${y * shipSide}px; 
                            top: ${x * shipSide}px;`;
 
-      let player_field = document.querySelector('#field_user1');    // временно
-
-      player_field.appendChild(div);
+      // let player_field = document.querySelector('#field_user1');    // временно
+      console.log(this.props);
+      this.props.field.appendChild(div);
     } catch(err) {
       console.error(err);
     }

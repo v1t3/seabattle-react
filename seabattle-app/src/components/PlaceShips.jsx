@@ -36,11 +36,11 @@ export default class PlaceShips extends Component {
             dir: fieldCoord.dir,
             decks, 
             player: state.user,
+            field: state.field,
             shipname: fieldCoord.shipname,
             shipSide: state.shipSide,
             flot: state.flot,
-            matrix: this.matrix,
-            setMatrix: this.setMatrix
+            matrix: this.matrix
           });
           console.log('ship=', ship);
           console.log('state.field=', state.field);
@@ -196,14 +196,16 @@ export default class PlaceShips extends Component {
     // console.log('clicked PlaceShips');
 
     try {
-      let userfield1 = document.getElementById('field_user1');
+      // let userfield1 = document.getElementById('field_user1');  
       // console.log('userfield1=', userfield1);
 
-      this.props.setUserfield(userfield1);
-      // console.log('child setUserfield');
+      let userfield = document.getElementById('control_btns').parentElement.querySelector('.ships');
 
-      const user = this.props.user;
-      // console.log('user= ',user);
+      // console.log('button=', document.getElementById('control_btns').parentElement.querySelector('.ships'));
+
+      this.props.setUserfield(userfield);
+
+      // const user = this.props.user;
       
       // рандомно расставляем корабли
       this.cleanField();
