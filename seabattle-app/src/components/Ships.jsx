@@ -28,13 +28,13 @@ export default class Ships extends Component {
       	this.state.shipMatrix.push([x + k * dir, y + k * !dir]);    // возможно уже не нужно
         // this.props.setMatrix([x + k * dir, y + k * !dir]);
         
-        console.log('x=', x);
-        console.log('y=', y);
-        console.log('k=', k);
-        console.log('decks=', decks);
-        console.log('dir=', dir);
-        console.log('this.props.matrix=', this.props.matrix);
-        console.log('this.state.shipMatrix=', this.state.shipMatrix);
+        // console.log('x=', x);
+        // console.log('y=', y);
+        // console.log('k=', k);
+        // console.log('decks=', decks);
+        // console.log('dir=', dir);
+        // console.log('this.props.matrix=', this.props.matrix);
+        // console.log('this.state.shipMatrix=', this.state.shipMatrix);
     
       	k++;
       }
