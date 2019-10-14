@@ -24,7 +24,7 @@ export default class StartGame extends Component {
       <div id="control_btns" className="control-btns" data-hidden="false">
         <span id="play" 
               className="btn-play" 
-              data-hidden="false" 
+              data-hidden="true" 
               onClick={this.playClick}
         >
           Играть

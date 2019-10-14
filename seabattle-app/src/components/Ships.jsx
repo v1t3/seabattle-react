@@ -9,7 +9,7 @@ export default class Ships extends Component {
     // player: this.props.player,
     // shipname: this.props.shipname,
     // shipSide: this.props.shipSide
-    matrix: this.props.matrix
+    shipMatrix: []
   }
 		
 	createShip = function() {
@@ -23,18 +23,31 @@ export default class Ships extends Component {
       // количество циклов будет равно количеству палуб создаваемого корабля
       while (k < decks) {
       	// записываем координаты корабля в матрицу игрового поля
-      	this.state.matrix[x + k * dir][y + k * !dir] = 1;
+      	this.props.matrix[x + k * dir][y + k * !dir] = 1;
       	// записываем координаты корабля в матрицу экземпляра корабля
-      	this.state.matrix.push([x + k * dir, y + k * !dir]);
+      	this.state.shipMatrix.push([x + k * dir, y + k * !dir]);    // возможно уже не нужно
+        // this.props.setMatrix([x + k * dir, y + k * !dir]);
+        
+        console.log('x=', x);
+        console.log('y=', y);
+        console.log('k=', k);
+        console.log('decks=', decks);
+        console.log('dir=', dir);
+        console.log('this.props.matrix=', this.props.matrix);
+        console.log('this.state.shipMatrix=', this.state.shipMatrix);
+    
       	k++;
       }
 
       // заносим информацию о созданном корабле в массив флот
-      player.flot.push(this);
+      this.props.flot.push(this);
+      console.log('this.props.flot=', this.props.flot);
+
       // если корабль создан для игрока, выводим его на экран
       if (player === 'user1') this.showShip();
+
       // когда созданы все корабли (10 шт), показываем кнопку запуска игры
-      if (player.flot.length === 10) {
+      if (this.props.flot.length === 10) {
       	document.getElementById('play').setAttribute('data-hidden', 'false');
       }
     } catch(err) {

@@ -39,7 +39,8 @@ export default class PlaceShips extends Component {
             shipname: fieldCoord.shipname,
             shipSide: state.shipSide,
             flot: state.flot,
-            matrix: this.matrix
+            matrix: this.matrix,
+            setMatrix: this.setMatrix
           });
           console.log('ship=', ship);
           console.log('state.field=', state.field);
@@ -180,6 +181,14 @@ export default class PlaceShips extends Component {
       console.error(err);
     }
   }
+
+	// setMatrix = function(data) {
+	// 	console.log('parent setMatrix=', data);
+    
+  //   this.matrix.push(data);
+
+	// 	console.log('this.matrix=', this.matrix);
+	// }.bind(this);
 
 
 	randomClick = () => {
