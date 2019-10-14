@@ -14,13 +14,14 @@ class PopupName extends Component {
   }
 
   handleChange(event) {
+    event.preventDefault();
     this.setState({value: event.target.value});
-    console.log('A name was submitted: ' + this.state.value);
   }
 
   handleSubmit(event) {
-    console.log('A name was submitted: ' + this.state.value);
     event.preventDefault();
+    document.querySelector('#username1').innerHTML = this.state.value;
+    document.querySelector('#popup').setAttribute('data-hidden', true);
   }
 
   render() {
@@ -30,7 +31,7 @@ class PopupName extends Component {
           <h3>Введите имя игрока 1</h3>
           <form action="post" onSubmit={this.handleChange}>
             <input id="popup_txt" type="text" placeholder="" onChange={this.handleChange} value={this.state.value} />
-            <input id="popup_submit" type="button" value="OK" />
+            <input id="popup_submit" type="button" value="OK" onClick={this.handleSubmit} />
           </form>
         </div>
       </div>

@@ -1,41 +1,38 @@
 import React, {Component} from 'react'
-import Field from './Field/'
 import './style.css'
-import PlaceShips from './PlaceShips'
+import Field from './Field/'
+// import PlaceShips from './PlaceShips'
 import StartGame from './StartGame'
-import Rules from './Rules'
+// import Rules from './Rules'
 // import PopupName from './PopupName'
-import Ships from './Ships'
-import Controller from './Controller'
-import getId from './getId'
 
-export default 
-class App extends Component {
+export default class App extends Component {
   state = {
-    reverted: false
+    user1: null,
+    user2: null
   }
-  
+
   render() {
+    let user1 = <Field user="user1" playerNum="1" playerName="Юзер" />
+    let user2 = <Field user="user2" playerNum="2" playerName="Комп" />
     return (
       <div className="wrap">
         <h3 id="text_top" className="text-top">Игра "Морской бой"</h3>
         <div className="field-wrap">
-          <Field playerState='user' />
-          <Field playerState='pc' />
+          {user1}
+          {user2}
         </div>        
         
-        <div id="control_btns" className="control-btns" data-hidden="false">
-          <PlaceShips />
-          <StartGame />
-        </div>
+        
+        <StartGame />
 
         <div id="text_btm" className="text-btm"></div>
 
-        <Rules/>
+        {/* <Rules/> */}
         {/* <PopupName/> */}
-        <Ships/>
+        {/* <Ships/> */}
       </div>
     )
   }
+  
 }
-

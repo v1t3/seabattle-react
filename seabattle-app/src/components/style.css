@@ -52,6 +52,7 @@ p {
 	height: 35px;
 	position: absolute;
 	border: 2px solid #8a6ac2;
+	background-color: whitesmoke;
 }
 .vertical {
 	transform: rotate(90deg);

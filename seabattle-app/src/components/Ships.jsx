@@ -1,72 +1,89 @@
 import React, {Component} from 'react'
 
-export default 
-class Rules extends Component {
-	constructor(props) {
-		super(props);
-		
-		const {player, fieldCoord} = this.props;
-
-		// на каком поле создаётся данный корабль
-		this.player = player;
-		// уникальное имя корабля
-		this.shipname = fieldCoord.shipname;
-		//количество палуб
-		this.decks = fieldCoord.decks;
-		// координата X первой палубы
-		this.x0 = fieldCoord.x;
-		// координата Y первой палубы
-		this.y0 = fieldCoord.y;
-		// направлении расположения палуб
-		this.dir = fieldCoord.dir;
-		// счётчик попаданий
-		this.hits = 0;
-		// массив с координатами палуб корабля
-		this.matrix = [];
-	}
+export default class Ships extends Component {  
+  state = {
+    // x: this.props.x,
+    // y: this.props.y,
+    // dir: this.props.dir,
+    // decks: this.props.decks,
+    // player: this.props.player,
+    // shipname: this.props.shipname,
+    // shipSide: this.props.shipSide
+    shipMatrix: []
+  }
 		
 	createShip = function() {
-		let k = 0,
-				x = this.x0,
-				y = this.y0,
-				dir = this.dir,
-				decks	= this.decks,
-				player = this.player
+    console.log('');
+    console.log('createShip');
 
-		// количество циклов будет равно количеству палуб создаваемого корабля
-		while (k < decks) {
-			// записываем координаты корабля в матрицу игрового поля
-			player.matrix[x + k * dir][y + k * !dir] = 1;
-			// записываем координаты корабля в матрицу экземпляра корабля
-			this.matrix.push([x + k * dir, y + k * !dir]);
-			k++;
-		}
+    try {
+      let {dir, decks, x, y, player} = this.props;
+      let k = 0;
+          
+      // количество циклов будет равно количеству палуб создаваемого корабля
+      while (k < decks) {
+      	// записываем координаты корабля в матрицу игрового поля
+      	this.props.matrix[x + k * dir][y + k * !dir] = 1;
+      	// записываем координаты корабля в матрицу экземпляра корабля
+      	this.state.shipMatrix.push([x + k * dir, y + k * !dir]);    // возможно уже не нужно
+        // this.props.setMatrix([x + k * dir, y + k * !dir]);
+        
+        console.log('x=', x);
+        console.log('y=', y);
+        console.log('k=', k);
+        console.log('decks=', decks);
+        console.log('dir=', dir);
+        console.log('this.props.matrix=', this.props.matrix);
+        console.log('this.state.shipMatrix=', this.state.shipMatrix);
+    
+      	k++;
+      }
 
-		// заносим информацию о созданном корабле в массив флот
-		player.flot.push(this);
-		// если корабль создан для игрока, выводим его на экран
-		if (player == user) this.showShip();
-		// когда созданы все корабли (10 шт), показываем кнопку запуска игры
-		if (user.flot.length == 10) {
-			getId('play').setAttribute('data-hidden', 'false');
-		}
+      // заносим информацию о созданном корабле в массив флот
+      this.props.flot.push(this);
+      console.log('this.props.flot=', this.props.flot);
+
+      // если корабль создан для игрока, выводим его на экран
+      if (player === 'user1') this.showShip();
+
+      // когда созданы все корабли (10 шт), показываем кнопку запуска игры
+      if (this.props.flot.length === 10) {
+      	document.getElementById('play').setAttribute('data-hidden', 'false');
+      }
+    } catch(err) {
+      console.error(err);
+    }
 	}
 
 	showShip = function() {
-		let div = document.createElement('div'),
-				dir_v = (this.dir == 1) ? ' vertical' : '',
-				classname	= this.shipname.slice(0, -1),
-				player = this.player;
+    // console.log('');
+    // console.log('showShip');
 
-		div.setAttribute('id', this.shipname);
-		div.className = 'ship ' + classname + dir_v;
-		// задаём позиционирование кораблю
-		div.style.cssText = `left: ${this.y0 * player.shipSide}px; 
-													top: ${this.x0 * player.shipSide}px;`;
-		player.field.appendChild(div);
+    try {
+      let {dir, shipname, x, y, shipSide} = this.props;
+      let div = document.createElement('div'),
+          dir_v = (dir === 1) ? ' vertical' : '',
+          classname	= shipname.slice(0, -1);
+          
+
+      div.setAttribute('id', shipname);
+      div.className = 'ship ' + classname + dir_v;
+      // задаём позиционирование кораблю
+      div.style.cssText = `left: ${y * shipSide}px; 
+                           top: ${x * shipSide}px;`;
+
+      let player_field = document.querySelector('#field_user1');    // временно
+
+      player_field.appendChild(div);
+    } catch(err) {
+      console.error(err);
+    }
 	}
 
   render() {
+    console.log('');
+    console.log('render Ships');
+
     return (
       <div id="ships_collection" className="ships-collection">
         <div id="fourdeck1" className="ship fourdeck"></div>
