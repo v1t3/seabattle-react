@@ -30,9 +30,21 @@ export default class PlaceShips extends Component {
           // console.log('fieldCoord.decks=', fieldCoord.decks);
           // console.log('fieldCoord.shipname=', fieldCoord.shipname);
     
-          let ship = new Ships(this, fieldCoord);
+          let ship = new Ships({
+            x: fieldCoord.x,
+            y: fieldCoord.y,
+            dir: fieldCoord.dir,
+            decks, 
+            player: state.user,
+            shipname: fieldCoord.shipname
+          });
           console.log('ship=', ship);
-          // ship.createShip();
+          console.log('state.field=', state.field);
+          ship.createShip();
+          ship.showShip();
+          
+          // let ship = <Ships player={this} fieldCoord={fieldCoord}/>
+          // console.log('ship=', ship);
         }
       }
     } catch(err) {
@@ -41,12 +53,11 @@ export default class PlaceShips extends Component {
 	}
 
 	getCoordinatesDecks = function(decks) {
-    console.log('');
-    console.log('getCoordinatesDecks');
+    // console.log('');
+    // console.log('getCoordinatesDecks');
 
     try {
       // const state = this.props.state;
-
       let x, y,
           dir = this.getRandom(1);
     
@@ -73,8 +84,8 @@ export default class PlaceShips extends Component {
 	}
 
 	checkLocationShip = function(x, y, dir, decks) {
-    console.log('');
-    console.log('checkLocationShip');
+    // console.log('');
+    // console.log('checkLocationShip');
 
     try {
       // let fromX, toX, fromY, toY;
@@ -109,20 +120,20 @@ export default class PlaceShips extends Component {
 	}
 
 	cleanField = function() {
-    console.log('');
-    console.log('cleanField');
-    console.log('this.props=', this.props);
+    // console.log('');
+    // console.log('cleanField');
+    // console.log('this.props=', this.props);
 
     try {
       const state = this.props.state;
       let parent = state.field;
-      console.log('parent=', parent);
+      // console.log('parent=', parent);
       let id = parent.getAttribute('id');
-      console.log('id=', id);
+      // console.log('id=', id);
 
           // получаем коллекцию все кораблей, которые нужно удалить
       let divs = document.querySelectorAll(`#${id} > div`);
-      console.log('divs=', divs);
+      // console.log('divs=', divs);
     
       // перебираем в цикле полученную коллекцию и удаляем входящие в неё корабли
       for (let el of divs) {
@@ -161,18 +172,18 @@ export default class PlaceShips extends Component {
 
 
 	randomClick = () => {
-    console.log('');
-    console.log('clicked PlaceShips');
+    // console.log('');
+    // console.log('clicked PlaceShips');
 
     try {
       let userfield1 = document.getElementById('field_user1');
-      console.log('userfield1=', userfield1);
+      // console.log('userfield1=', userfield1);
 
       this.props.setUserfield(userfield1);
       // console.log('child setUserfield');
 
       const user = this.props.user;
-      console.log('user= ',user);
+      // console.log('user= ',user);
       
       // рандомно расставляем корабли
       this.cleanField();
@@ -183,7 +194,6 @@ export default class PlaceShips extends Component {
 	}
   
   render() {
-    // console.log('PlaceShips field ', this.props.field);
     return (
       <div id="control_btns" className="control-btns" data-hidden="false">
         <span className="link-random" 

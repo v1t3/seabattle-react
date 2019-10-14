@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import './style.css'
-// import Ships from '../Ships'
 import PlaceShips from '../PlaceShips'
+import Ships from '../Ships'
 
 export default
 class Field extends Component {
@@ -75,13 +75,9 @@ class Field extends Component {
           <div id={'field_user' + this.state.playerNum} className="ships"></div>
         </div>
 				
-			<PlaceShips user={this.state.user} 
-									field={this.state.field} 
-									setUserfield={this.setUserfield}
-									flot={this.state.flot}
-                  key={this.state.field}
-                  state={this.state} />
-			{console.log('field1=', this.state.field)}
+			<PlaceShips state={this.state} setUserfield={this.setUserfield} />
+
+      <Ships />
       </div>
 			
     )
