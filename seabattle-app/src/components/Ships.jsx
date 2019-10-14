@@ -1,29 +1,13 @@
 import React, {Component} from 'react'
 
-export default class Ships extends Component {
-	// constructor(props) {
-	// 	super(props);
-		
-	// 	const {player, fieldCoord} = this.props;
-    
-  //   this.player = player;
-	// 	this.shipname = fieldCoord.shipname;
-	// 	this.decks = fieldCoord.decks;
-	// 	this.x0 = fieldCoord.x;
-	// 	this.y0 = fieldCoord.y;
-	// 	this.dir = fieldCoord.dir;
-	// 	this.hits = 0;
-	// 	this.matrix = [];
-  // }
-  
+export default class Ships extends Component {  
   state = {
     x: this.props.x,
     y: this.props.y,
     dir: this.props.dir,
-    player: this.props.player,
     decks: this.props.decks,
-    shipname: this.props.shipname,
-    player: this.props.player
+    player: this.props.player,
+    shipname: this.props.shipname
   }
 		
 	createShip = function() {
