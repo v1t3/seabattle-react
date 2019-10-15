@@ -2,6 +2,10 @@ import React, {Component} from 'react'
 import Ships from './Ships'
 
 export default class PlaceShips extends Component {
+
+  state = {
+    randomId: 'random' + this.props.state.playerNum
+  }
   
 	randomLocationShips = function() {
     console.log('');
@@ -199,9 +203,12 @@ export default class PlaceShips extends Component {
       // let userfield1 = document.getElementById('field_user1');  
       // console.log('userfield1=', userfield1);
 
-      let userfield = document.getElementById('control_btns').parentElement.querySelector('.ships');
+      let userfield = document.getElementById(this.state.randomId).parentElement.parentElement.querySelector('.ships');
 
-      // console.log('button=', document.getElementById('control_btns').parentElement.querySelector('.ships'));
+      console.log('button= (need fix)', document.getElementById(this.state.randomId));
+      console.log('button= (need fix)', document.getElementById(this.state.randomId).parentElement);
+      console.log('button= (need fix)', document.getElementById(this.state.randomId).parentElement.parentElement);
+      console.log('button= (need fix)', document.getElementById(this.state.randomId).parentElement.parentElement.querySelector('.ships'));
 
       this.props.setUserfield(userfield);
 
@@ -216,10 +223,11 @@ export default class PlaceShips extends Component {
 	}
   
   render() {
+    // let randomId = 'random' + this.props.state.playerNum;
     return (
       <div id="control_btns" className="control-btns" data-hidden="false">
         <span className="link-random" 
-              id="random" 
+              id={this.state.randomId} 
               data-target="random" 
               data-hidden="false"
               onClick={this.randomClick}
