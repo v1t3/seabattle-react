@@ -173,7 +173,7 @@ export default class PlaceShips extends Component {
 	}
   
   render() {
-    console.log(`'props PlaceShips ${this.props.user}`, this.props);
+    // console.log(`'props PlaceShips ${this.props.user}`, this.props);
     
     return (
       <div id="control_btns" className="control-btns" data-hidden="false">

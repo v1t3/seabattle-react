@@ -1,67 +1,88 @@
 import React from 'react'
 
-
 export default class Controller extends React.Component {
-  state = {
-    compShootMatrix: [],
-    compShootMatrixAI: [],
-    compShootMatrixAround: [],
-    compStartPoints: [
-			[ [6,0], [2,0], [0,2], [0,6] ], 
-			[ [3,0], [7,0], [9,2], [9,6] ]
-		]
-  }
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			curPlayer: null,
+			curEnemy: null,
+			compShootMatrix: [],
+			compShootMatrixAI: [],
+			compShootMatrixAround: [],
+			compStartPoints: [
+				[ [6,0], [2,0], [0,2], [0,6] ], 
+				[ [3,0], [7,0], [9,2], [9,6] ]
+			]
+		}
+
+		console.log('construct');
+	}
+	
+  componentDidMount() {
+		console.log('componentDidMount');
+		try {
+		} catch(err) {
+			console.error(err);
+		}
+	}
+
+	componentWillReceiveProps() {
+		console.log('componentWillReceiveProps');
+	}
 
 	init = function() {
-		console.log('init');
-		
-    console.log('this.props=', this.props);
-    // console.log('StartGame.state=', StartGame.state);
-    // console.log('this.props.curPlayer=', this.props.curPlayer);
+		try {
+			console.log('init');
+			
+			console.log('this.state 1=', this.state);
 
-		let self = this;
-		// рандомно определяем кто будет стрелять первым
-		let rnd = this.getRandom(1);
-		let userNum;
-		console.log('rnd=', rnd);
-		
-		if (rnd === 0) {
-			userNum = 'user1';
-		} else {
-			userNum = 'user2';
-		}
-		// this.props.setCurPlayer(userNum);
+			let self = this;
 
-		// чей выстрел следующий
-		// enemy = (player === user1) ? user2 : user1;
+			// рандомно определяем кто будет стрелять первым
+			let rnd = this.getRandom(1);
+			console.log('rnd=', rnd);
+			
+			let userNum = (rnd === 0) ? 'user1' : 'user2';
+			// this.setState({curPlayer: userNum}); //почему-то не работает			
+			this.state.curPlayer = userNum;
 
-		// // // массив с координатами выстрелов при рандомном выборе
-		// // user2.shootMatrix = [];
-		// // // массив с координатами выстрелов для AI (компьютер стреляет случайно не по всему полю, 
-		// // // а только по диагоналям)
-		// // user2.shootMatrixAI = [];
-		// // // массив с координатами вокруг клетки с попаданием
-		// // user2.shootMatrixAround = [];
-		// // // массив координат начала циклов
-		// // user2.startPoints = [
-		// // 	[ [6,0], [2,0], [0,2], [0,6] ],
-		// // 	[ [3,0], [7,0], [9,2], [9,6] ]
-		// // ];
+			// чей выстрел следующий
+			let enemyNum = (this.state.curPlayer === 'user1') ? 'user2' : 'user1';
+			this.state.curEnemy = enemyNum;
+			
+			console.log('this.state 2=', this.state);
 
-		// self.resetTempShip();
-		// self.setShootMatrix();
+			// // // массив с координатами выстрелов при рандомном выборе
+			// // user2.shootMatrix = [];
+			// // // массив с координатами выстрелов для AI (компьютер стреляет случайно не по всему полю, 
+			// // // а только по диагоналям)
+			// // user2.shootMatrixAI = [];
+			// // // массив с координатами вокруг клетки с попаданием
+			// // user2.shootMatrixAround = [];
+			// // // массив координат начала циклов
+			// // user2.startPoints = [
+			// // 	[ [6,0], [2,0], [0,2], [0,6] ],
+			// // 	[ [3,0], [7,0], [9,2], [9,6] ]
+			// // ];
 
-		// // если первым стреляет человек
-		// if (player === user1) {
-		// 	userfield2.addEventListener('click', self.shoot);
-		// 	self.showServiseText('Вы стреляете первым.');
-		// } else {
-		// 	self.showServiseText('Первым стреляет компьютер.');
-		// 	// вызываем функцию выстрела компа
-		// 	setTimeout(function() {
-		// 		return self.shoot();
-		// 	}, 1000);
-		// }
+			// self.resetTempShip();
+			// self.setShootMatrix();
+
+			// // если первым стреляет человек
+			// if (player === user1) {
+			// 	userfield2.addEventListener('click', self.shoot);
+			// 	self.showServiseText('Вы стреляете первым.');
+			// } else {
+			// 	self.showServiseText('Первым стреляет компьютер.');
+			// 	// вызываем функцию выстрела компа
+			// 	setTimeout(function() {
+			// 		return self.shoot();
+			// 	}, 1000);
+			// }
+    } catch(err) {
+      console.error(err);
+    }
 	}
 
 	// обработка выстрела
@@ -417,5 +438,10 @@ export default class Controller extends React.Component {
 	
 	getRandom(n) {
 		return Math.floor(Math.random() * (n + 1));
+	}
+	
+	render() {
+		// заглушка
+   return <></>;
 	}
 }
