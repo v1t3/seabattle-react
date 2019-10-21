@@ -2,48 +2,50 @@ import React, {Component} from 'react'
 import Ships from './Ships'
 
 export default class PlaceShips extends Component {
+  // constructor(props) {
+  //   super(props);
+
+  //   // this.state = {
+  //   //   randomId: 'random' + this.props.playerNum
+  //   // }
+  // }
+
+  // state = {
+    // user: this.props.user,
+    // shipSide: this.props.shipSide,
+    // shipsData:  this.props.shipsData,
+    // field: this.props.field,
+    // flot: this.props.flot,
+  // }
   
 	randomLocationShips = function() {
-    console.log('');
-    console.log('randomLocationShips');
-    console.log('this.props=', this.props);
-    console.log('this.state=', this.props.state);
-
     try {
       this.matrix = this.createMatrix();  // заполняем базу нулями
-      const state = this.props.state;
     
-      let length = state.shipsData.length;
+      let length = this.props.shipsData.length;
       let decks;
       let fieldCoord;
 
       for (let i = 1; i < length; i++) {
-        decks = state.shipsData[i][0];
-        // console.log('decks=', decks);
+        decks = this.props.shipsData[i][0];
     
         for (let j = 0; j < i; j++) {
           fieldCoord = this.getCoordinatesDecks(decks);
-          // console.log('fieldCoord=', fieldCoord);
-
           fieldCoord.decks = decks;
-          fieldCoord.shipname	= state.shipsData[i][1] + String(j + 1);
-          // console.log('fieldCoord.decks=', fieldCoord.decks);
-          // console.log('fieldCoord.shipname=', fieldCoord.shipname);
+          fieldCoord.shipname	= this.props.shipsData[i][1] + String(j + 1);
     
           let ship = new Ships({
             x: fieldCoord.x,
             y: fieldCoord.y,
             dir: fieldCoord.dir,
             decks, 
-            player: state.user,
+            player: this.props.user,
+            field: this.props.field,
             shipname: fieldCoord.shipname,
-            shipSide: state.shipSide,
-            flot: state.flot,
-            matrix: this.matrix,
-            setMatrix: this.setMatrix
+            shipSide: this.props.shipSide,
+            flot: this.props.flot,
+            matrix: this.matrix
           });
-          console.log('ship=', ship);
-          console.log('state.field=', state.field);
           
           ship.createShip();
           ship.showShip();
@@ -55,11 +57,7 @@ export default class PlaceShips extends Component {
 	}
 
 	getCoordinatesDecks = function(decks) {
-    // console.log('');
-    // console.log('getCoordinatesDecks');
-
     try {
-      // const state = this.props.state;
       let x, y,
           dir = this.getRandom(1);
     
@@ -86,20 +84,11 @@ export default class PlaceShips extends Component {
 	}
 
 	checkLocationShip = function(x, y, dir, decks) {
-    // console.log('');
-    // console.log('checkLocationShip');
-
     try {
       let fromX, toX, fromY, toY;
-      // console.log('x=', x);
-      // console.log('y=', y);
-      // console.log('dir=', dir);
-      // console.log('decks=', decks);
 
       fromX = (x === 0) ? x : x - 1;
       fromY = (y === 0) ? y : y - 1;
-      // console.log('fromX=', fromX);
-      // console.log('fromY=', fromY);
     
       if (dir === 1) {
       	if (x + decks === 10) toX = x + decks;
@@ -114,11 +103,8 @@ export default class PlaceShips extends Component {
       	if (y + decks === 10) toY = y + decks;
       	else toY = y + decks + 1;
       }
-      // console.log('toX=', toX);
-      // console.log('toY=', toY);
     
       // make func
-        // console.log('matrix[i][j]=', this.matrix);
       for (let i = fromX; i < toX; i++) {
       	for (let j = fromY; j < toY; j++) {
       		if (this.matrix[i][j] === 1) return false;
@@ -132,20 +118,12 @@ export default class PlaceShips extends Component {
 	}
 
 	cleanField = function() {
-    // console.log('');
-    // console.log('cleanField');
-    // console.log('this.props=', this.props);
-
     try {
-      const state = this.props.state;
-      let parent = state.field;
-      // console.log('parent=', parent);
+      let parent = this.props.field;
       let id = parent.getAttribute('id');
-      // console.log('id=', id);
 
-          // получаем коллекцию все кораблей, которые нужно удалить
+      // получаем коллекцию все кораблей, которые нужно удалить
       let divs = document.querySelectorAll(`#${id} > div`);
-      // console.log('divs=', divs);
     
       // перебираем в цикле полученную коллекцию и удаляем входящие в неё корабли
       for (let el of divs) {
@@ -153,7 +131,7 @@ export default class PlaceShips extends Component {
       }
     
       // очищаем массив объектов кораблей
-      state.flot.length = 0;
+      this.props.flot.length = 0;
     } catch(err) {
       console.error(err);
     }
@@ -182,29 +160,17 @@ export default class PlaceShips extends Component {
     }
   }
 
-	// setMatrix = function(data) {
-	// 	console.log('parent setMatrix=', data);
-    
-  //   this.matrix.push(data);
-
-	// 	console.log('this.matrix=', this.matrix);
-	// }.bind(this);
-
-
 	randomClick = () => {
-    // console.log('');
-    // console.log('clicked PlaceShips');
-
     try {
-      let userfield1 = document.getElementById('field_user1');
-      // console.log('userfield1=', userfield1);
-
-      this.props.setUserfield(userfield1);
-      // console.log('child setUserfield');
-
-      const user = this.props.user;
-      // console.log('user= ',user);
+      let userfield = document.getElementById(this.props.randomId)
+                      .parentElement
+                      .parentElement
+                      .querySelector('.ships');
       
+      this.props.setUserfield(userfield);
+      
+      if (this.props.field === null) return null;
+
       // рандомно расставляем корабли
       this.cleanField();
       this.randomLocationShips();
@@ -214,10 +180,12 @@ export default class PlaceShips extends Component {
 	}
   
   render() {
+    console.log('props PlaceShips 1', this.props);
+    
     return (
       <div id="control_btns" className="control-btns" data-hidden="false">
         <span className="link-random" 
-              id="random" 
+              id={this.props.randomId} 
               data-target="random" 
               data-hidden="false"
               onClick={this.randomClick}

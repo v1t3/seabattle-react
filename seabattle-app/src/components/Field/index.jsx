@@ -1,10 +1,9 @@
 import React, {Component} from 'react'
 import './style.css'
 import PlaceShips from '../PlaceShips'
-import Ships from '../Ships'
+// import Ships from '../Ships'
 
-export default
-class Field extends Component {
+export default class Field extends Component {
 	constructor(props) {
     super(props);
 		const {user, playerNum, playerName} = this.props;
@@ -28,17 +27,26 @@ class Field extends Component {
 			fieldY: window.pageXOffset,
 			fieldRight: this.fieldY + this.fieldSide,
 			fieldBtm: this.fieldX + this.fieldSide,
+      randomId: 'random' + playerNum,
 			flot: []
 		}
 	}
 
 	setUserfield = function(data) {
-		// console.log('parent setUserfield=', data);
+		console.log('parent setUserfield=', data);
 		
 		this.setState({field: data});
-		// console.log('new field=', this.state.field);
+    console.log('new field=', this.state.field);
 	}.bind(this);
 
+  componentDidMount() {
+    let userfield = document.getElementById(this.state.randomId)
+                    .parentElement
+                    .parentElement
+                    .querySelector('.ships');
+    
+    this.setUserfield(userfield);
+  }
   
   render() {
     return (
@@ -75,9 +83,17 @@ class Field extends Component {
           <div id={'field_user' + this.state.playerNum} className="ships"></div>
         </div>
 				
-			<PlaceShips state={this.state} setUserfield={this.setUserfield} />
+      <PlaceShips user={this.state.user}
+                  playerNum={this.state.playerNum}
+                  shipSide={this.state.shipSide}
+                  shipsData={this.state.shipsData}
+                  field={this.state.field}
+                  randomId={this.state.randomId}
+                  flot={this.state.flot}
+                  setUserfield={this.setUserfield}
+      />
 
-      <Ships />
+      {/* <Ships /> */}
       </div>
 			
     )
