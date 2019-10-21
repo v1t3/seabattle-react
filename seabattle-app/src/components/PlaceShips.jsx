@@ -2,38 +2,48 @@ import React, {Component} from 'react'
 import Ships from './Ships'
 
 export default class PlaceShips extends Component {
+  // constructor(props) {
+  //   super(props);
 
-  state = {
-    randomId: 'random' + this.props.state.playerNum
-  }
+  //   // this.state = {
+  //   //   randomId: 'random' + this.props.playerNum
+  //   // }
+  // }
+
+  // state = {
+    // user: this.props.user,
+    // shipSide: this.props.shipSide,
+    // shipsData:  this.props.shipsData,
+    // field: this.props.field,
+    // flot: this.props.flot,
+  // }
   
 	randomLocationShips = function() {
     try {
       this.matrix = this.createMatrix();  // заполняем базу нулями
-      const state = this.props.state;
     
-      let length = state.shipsData.length;
+      let length = this.props.shipsData.length;
       let decks;
       let fieldCoord;
 
       for (let i = 1; i < length; i++) {
-        decks = state.shipsData[i][0];
+        decks = this.props.shipsData[i][0];
     
         for (let j = 0; j < i; j++) {
           fieldCoord = this.getCoordinatesDecks(decks);
           fieldCoord.decks = decks;
-          fieldCoord.shipname	= state.shipsData[i][1] + String(j + 1);
+          fieldCoord.shipname	= this.props.shipsData[i][1] + String(j + 1);
     
           let ship = new Ships({
             x: fieldCoord.x,
             y: fieldCoord.y,
             dir: fieldCoord.dir,
             decks, 
-            player: state.user,
-            field: state.field,
+            player: this.props.user,
+            field: this.props.field,
             shipname: fieldCoord.shipname,
-            shipSide: state.shipSide,
-            flot: state.flot,
+            shipSide: this.props.shipSide,
+            flot: this.props.flot,
             matrix: this.matrix
           });
           
@@ -109,8 +119,7 @@ export default class PlaceShips extends Component {
 
 	cleanField = function() {
     try {
-      const state = this.props.state;
-      let parent = state.field;
+      let parent = this.props.field;
       let id = parent.getAttribute('id');
 
       // получаем коллекцию все кораблей, которые нужно удалить
@@ -122,7 +131,7 @@ export default class PlaceShips extends Component {
       }
     
       // очищаем массив объектов кораблей
-      state.flot.length = 0;
+      this.props.flot.length = 0;
     } catch(err) {
       console.error(err);
     }
@@ -151,24 +160,17 @@ export default class PlaceShips extends Component {
     }
   }
 
-	// setMatrix = function(data) {
-	// 	console.log('parent setMatrix=', data);
-    
-  //   this.matrix.push(data);
-
-	// 	console.log('this.matrix=', this.matrix);
-	// }.bind(this);
-
-
 	randomClick = () => {
     try {
-      let userfield = document.getElementById(this.state.randomId)
+      let userfield = document.getElementById(this.props.randomId)
                       .parentElement
                       .parentElement
                       .querySelector('.ships');
-
+      
       this.props.setUserfield(userfield);
       
+      if (this.props.field === null) return null;
+
       // рандомно расставляем корабли
       this.cleanField();
       this.randomLocationShips();
@@ -178,10 +180,12 @@ export default class PlaceShips extends Component {
 	}
   
   render() {
+    console.log('props PlaceShips 1', this.props);
+    
     return (
       <div id="control_btns" className="control-btns" data-hidden="false">
         <span className="link-random" 
-              id={this.state.randomId} 
+              id={this.props.randomId} 
               data-target="random" 
               data-hidden="false"
               onClick={this.randomClick}
