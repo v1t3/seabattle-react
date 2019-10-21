@@ -1,10 +1,9 @@
 import React, {Component} from 'react'
 import './style.css'
 import PlaceShips from '../PlaceShips'
-import Ships from '../Ships'
+// import Ships from '../Ships'
 
-export default
-class Field extends Component {
+export default class Field extends Component {
 	constructor(props) {
     super(props);
 		const {user, playerNum, playerName} = this.props;
@@ -77,7 +76,7 @@ class Field extends Component {
 				
 			<PlaceShips state={this.state} setUserfield={this.setUserfield} />
 
-      <Ships />
+      {/* <Ships /> */}
       </div>
 			
     )

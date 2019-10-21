@@ -13,8 +13,8 @@ export default class Ships extends Component {
   }
 		
 	createShip = function() {
-    console.log('');
-    console.log('createShip');
+    // console.log('');
+    // console.log('createShip');
 
     try {
       let {dir, decks, x, y, player} = this.props;
@@ -41,7 +41,7 @@ export default class Ships extends Component {
 
       // заносим информацию о созданном корабле в массив флот
       this.props.flot.push(this);
-      console.log('this.props.flot=', this.props.flot);
+      // console.log('this.props.flot=', this.props.flot);
 
       // если корабль создан для игрока, выводим его на экран
       if (player === 'user1') this.showShip();
@@ -73,7 +73,7 @@ export default class Ships extends Component {
                            top: ${x * shipSide}px;`;
 
       // let player_field = document.querySelector('#field_user1');    // временно
-      console.log(this.props);
+      // console.log(this.props);
       this.props.field.appendChild(div);
     } catch(err) {
       console.error(err);
@@ -81,8 +81,8 @@ export default class Ships extends Component {
 	}
 
   render() {
-    console.log('');
-    console.log('render Ships');
+    // console.log('');
+    // console.log('render Ships');
 
     return (
       <div id="ships_collection" className="ships-collection">
