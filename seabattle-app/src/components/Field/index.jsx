@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import './style.css'
 import PlaceShips from '../PlaceShips'
-// import Ships from '../Ships'
 
 export default class Field extends Component {
 	constructor(props) {
@@ -21,8 +20,6 @@ export default class Field extends Component {
 												[1, 'singledeck']
 											],
 			field: null,
-			// fieldX: field.getBoundingClientRect().top + window.pageYOffset,
-			// fieldY: field.getBoundingClientRect().left + window.pageXOffset,
 			fieldX: window.pageYOffset,
 			fieldY: window.pageXOffset,
 			fieldRight: this.fieldY + this.fieldSide,
@@ -32,20 +29,25 @@ export default class Field extends Component {
 		}
 	}
 
-	setUserfield = function(data) {
-		console.log('parent setUserfield=', data);
-		
-		this.setState({field: data});
-    console.log('new field=', this.state.field);
+	setUserfield = function() {
+    try {
+      let userfield = document.getElementById(this.state.randomId)
+                      .parentElement
+                      .parentElement
+                      .querySelector('.ships');
+
+      this.setState({field: userfield});
+    } catch(err) {
+      console.error(err);
+    }
 	}.bind(this);
 
   componentDidMount() {
-    let userfield = document.getElementById(this.state.randomId)
-                    .parentElement
-                    .parentElement
-                    .querySelector('.ships');
-    
-    this.setUserfield(userfield);
+    try {      
+      this.setUserfield();
+    } catch(err) {
+      console.error(err);
+    }      
   }
   
   render() {
@@ -82,18 +84,16 @@ export default class Field extends Component {
           </div>
           <div id={'field_user' + this.state.playerNum} className="ships"></div>
         </div>
-				
-      <PlaceShips user={this.state.user}
-                  playerNum={this.state.playerNum}
-                  shipSide={this.state.shipSide}
-                  shipsData={this.state.shipsData}
-                  field={this.state.field}
-                  randomId={this.state.randomId}
-                  flot={this.state.flot}
-                  setUserfield={this.setUserfield}
-      />
-
-      {/* <Ships /> */}
+          
+        <PlaceShips user={this.state.user}
+                    playerNum={this.state.playerNum}
+                    shipSide={this.state.shipSide}
+                    shipsData={this.state.shipsData}
+                    field={this.state.field}
+                    randomId={this.state.randomId}
+                    flot={this.state.flot}
+                    setUserfield={this.setUserfield}
+        />
       </div>
 			
     )
