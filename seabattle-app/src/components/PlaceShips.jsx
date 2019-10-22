@@ -2,25 +2,13 @@ import React, {Component} from 'react'
 import Ships from './Ships'
 
 export default class PlaceShips extends Component {
-  // constructor(props) {
-  //   super(props);
-
-  //   // this.state = {
-  //   //   randomId: 'random' + this.props.playerNum
-  //   // }
-  // }
-
-  // state = {
-    // user: this.props.user,
-    // shipSide: this.props.shipSide,
-    // shipsData:  this.props.shipsData,
-    // field: this.props.field,
-    // flot: this.props.flot,
-  // }
+  state = {
+    matrix: null
+  }
   
 	randomLocationShips = function() {
     try {
-      this.matrix = this.createMatrix();  // заполняем базу нулями
+      this.state.matrix = this.createMatrix();  // заполняем базу нулями
     
       let length = this.props.shipsData.length;
       let decks;
@@ -44,13 +32,15 @@ export default class PlaceShips extends Component {
             shipname: fieldCoord.shipname,
             shipSide: this.props.shipSide,
             flot: this.props.flot,
-            matrix: this.matrix
+            matrix: this.state.matrix
           });
           
           ship.createShip();
           ship.showShip();
         }
       }
+      this.props.setUserMatrix(this.props.user, this.state.matrix);
+
     } catch(err) {
       console.error(err);
     }
@@ -107,7 +97,7 @@ export default class PlaceShips extends Component {
       // make func
       for (let i = fromX; i < toX; i++) {
       	for (let j = fromY; j < toY; j++) {
-      		if (this.matrix[i][j] === 1) return false;
+      		if (this.state.matrix[i][j] === 1) return false;
       	}
       }
 
@@ -172,9 +162,19 @@ export default class PlaceShips extends Component {
     }
 	}
   
+  componentDidMount() {
+    try {
+      // console.log(this.props);
+      // this.props.setUserMatrix('user1', '123');
+
+    } catch(err) {
+      console.error(err);
+    }
+  }
+
   render() {
-    // console.log(`'props PlaceShips ${this.props.user}`, this.props);
-    
+    // console.log('placeships state', this.state);
+
     return (
       <div id="control_btns" className="control-btns" data-hidden="false">
         <span className="link-random" 

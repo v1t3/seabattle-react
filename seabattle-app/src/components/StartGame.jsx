@@ -2,22 +2,6 @@ import React, {Component} from 'react'
 import Controller from './Controller'
 
 export default class StartGame extends Component {
-  state = {
-		// curPlayer: null,
-    // curEnemy: null,
-    // compShootMatrix: [],
-    // compShootMatrixAI: [],
-    // compShootMatrixAround: [],
-    // compStartPoints: [
-		// 	[ [6,0], [2,0], [0,2], [0,6] ], 
-		// 	[ [3,0], [7,0], [9,2], [9,6] ]
-    // ]
-  }
-    
-  // setCurPlayer = (data) => {		
-  //   console.log('data setCurPlayer=', data);
-  //   this.setState({curPlayer: data});
-  // }
 
 	playClick = () => {
     try {
@@ -29,13 +13,21 @@ export default class StartGame extends Component {
       // user2.randomLocationShips();
     
       // // скрываем кнопки расстановки кораблей и запуска игры
+
       // let controlBtns = document.querySelectorAll('.control-btns');
       // for (let btn of controlBtns) {
       //   btn.setAttribute('data-hidden', true);
       // }
     
       // Запуск игры
-      let battle = new Controller();
+      let battle = new Controller({
+        matrixUser1: this.props.matrixUser1,
+        matrixUser2: this.props.matrixUser2,
+        fieldSide: this.props.fieldSide,
+        shipSide: this.props.shipSide,
+        fieldXUser2: this.props.fieldXUser2,
+        fieldYUser2: this.props.fieldYUser2
+      });
       battle.init();
     } catch(err) {
       console.error(err);
@@ -44,6 +36,7 @@ export default class StartGame extends Component {
   
 
   render() {
+		console.log('StartGame this.props',  this.props);
     return (
       <div className="control-btns" data-hidden="false">
         <span id="play" className="btn-play" data-hidden="true" onClick={this.playClick}>Играть</span>
