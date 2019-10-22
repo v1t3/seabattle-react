@@ -24,21 +24,19 @@ export default class StartGame extends Component {
       console.log('StartGame');
       
       // создаём объект поля компьютера и расставляем корабли
-      // document.getElementById('play').addEventListener('click', function() {
-        // user2 = new Field(userfield2);
-        // user2.randomLocationShips();
       
-        // // скрываем кнопки расстановки кораблей и запуска игры
-        // let controlBtns = document.querySelectorAll('.control-btns');
-        // for (let btn of controlBtns) {
-        //   btn.setAttribute('data-hidden', true);
-        // }
-      
-        // Запуск игры
-        let battle = new Controller();
-        battle.init();
-
-      // });
+      // user2 = new Field(userfield2);
+      // user2.randomLocationShips();
+    
+      // // скрываем кнопки расстановки кораблей и запуска игры
+      // let controlBtns = document.querySelectorAll('.control-btns');
+      // for (let btn of controlBtns) {
+      //   btn.setAttribute('data-hidden', true);
+      // }
+    
+      // Запуск игры
+      let battle = new Controller();
+      battle.init();
     } catch(err) {
       console.error(err);
     }
