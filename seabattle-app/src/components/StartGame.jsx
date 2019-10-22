@@ -11,7 +11,7 @@ export default class StartGame extends Component {
     // compStartPoints: [
 		// 	[ [6,0], [2,0], [0,2], [0,6] ], 
 		// 	[ [3,0], [7,0], [9,2], [9,6] ]
-		// ]
+    // ]
   }
     
   // setCurPlayer = (data) => {		
@@ -24,7 +24,7 @@ export default class StartGame extends Component {
       console.log('StartGame');
       
       // создаём объект поля компьютера и расставляем корабли
-      document.getElementById('play').addEventListener('click', function(e) {
+      // document.getElementById('play').addEventListener('click', function() {
         // user2 = new Field(userfield2);
         // user2.randomLocationShips();
       
@@ -38,7 +38,7 @@ export default class StartGame extends Component {
         let battle = new Controller();
         battle.init();
 
-      });
+      // });
     } catch(err) {
       console.error(err);
     }
@@ -48,14 +48,7 @@ export default class StartGame extends Component {
   render() {
     return (
       <div className="control-btns" data-hidden="false">
-        <span id="play" 
-              className="btn-play" 
-              data-hidden="true" 
-              onClick={this.playClick}
-        >
-          Играть
-        </span>
-        
+        <span id="play" className="btn-play" data-hidden="true" onClick={this.playClick}>Играть</span>
       </div>
     )
   }

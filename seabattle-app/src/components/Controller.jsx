@@ -16,25 +16,12 @@ export default class Controller extends React.Component {
 			]
 		}
 
-		console.log('construct');
+		console.log('Controller constructor');
 	}
 	
-  componentDidMount() {
-		console.log('componentDidMount');
-		try {
-		} catch(err) {
-			console.error(err);
-		}
-	}
-
-	componentWillReceiveProps() {
-		console.log('componentWillReceiveProps');
-	}
-
 	init = function() {
 		try {
 			console.log('init');
-			
 			console.log('this.state 1=', this.state);
 
 			let self = this;
@@ -44,7 +31,7 @@ export default class Controller extends React.Component {
 			console.log('rnd=', rnd);
 			
 			let userNum = (rnd === 0) ? 'user1' : 'user2';
-			// this.setState({curPlayer: userNum}); //почему-то не работает			
+			// this.setState({curPlayer: userNum}); //Can't call setState on a component that is not yet mounted		
 			this.state.curPlayer = userNum;
 
 			// чей выстрел следующий
