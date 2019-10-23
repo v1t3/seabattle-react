@@ -120,7 +120,7 @@ export default class Controller extends React.Component {
 			case 0:
 				console.log('промах');
 				// ставим точку и записываем промах в матрицу
-				// self.showIcons(enemy, coords, 'dot');
+				self.showIcons(this.state.curEnemy, coords, 'dot');
 				// enemy.matrix[coords.x][coords.y] = 3;
 
 				text = (this.state.curPlayer === 'user1') ? 'Вы промахнулись. Стреляет компьютер.' : 'Компьютер промахнулся. Ваш выстрел.';
@@ -149,7 +149,7 @@ export default class Controller extends React.Component {
 			case 1:
 				console.log('попадание');
 		// 		enemy.matrix[coords.x][coords.y] = 4;
-		// 		self.showIcons(enemy, coords, 'red-cross');
+				self.showIcons(this.state.curEnemy, coords, 'red-cross');
 				text = (this.state.curPlayer === 'user1') ? 'Поздравляем! Вы попали. Ваш выстрел.' : 'Компьютер попал в ваш корабль. Выстрел компьютера';
 				self.showServiseText(text);
 
@@ -242,12 +242,13 @@ export default class Controller extends React.Component {
 	}
 
 	showIcons = function(enemy, coords, iconClass) {
-    console.log('showIcons');
+		console.log('showIcons');
+		let field = (enemy === 'user1') ? document.querySelector('#field_user1') : document.querySelector('#field_user2');
     
 		let div = document.createElement('div');
 		div.className = 'icon-field ' + iconClass;
-		div.style.cssText = `left: ${coords.y * enemy.shipSide}px; top: ${coords.x * enemy.shipSide}px;`;
-		enemy.field.appendChild(div);
+		div.style.cssText = `left: ${coords.y * this.props.shipSide}px; top: ${coords.x * this.props.shipSide}px;`;
+		field.appendChild(div);
 	}
 
 	setShootMatrix = function() {
