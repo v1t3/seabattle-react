@@ -1,120 +1,157 @@
 import React from 'react'
-
+// import PlaceShips from './PlaceShips'
 
 export default class Controller extends React.Component {
-  state = {
-    compShootMatrix: [],
-    compShootMatrixAI: [],
-    compShootMatrixAround: [],
-    compStartPoints: [
-			[ [6,0], [2,0], [0,2], [0,6] ], 
-			[ [3,0], [7,0], [9,2], [9,6] ]
-		]
-  }
+	constructor(props) {
+		super(props);
 
-	init = function() {
-		console.log('init');
-		
-    console.log('this.props=', this.props);
-    // console.log('StartGame.state=', StartGame.state);
-    // console.log('this.props.curPlayer=', this.props.curPlayer);
-
-		let self = this;
-		// рандомно определяем кто будет стрелять первым
-		let rnd = this.getRandom(1);
-		let userNum;
-		console.log('rnd=', rnd);
-		
-		if (rnd === 0) {
-			userNum = 'user1';
-		} else {
-			userNum = 'user2';
+		this.state = {
+			curPlayer: null,
+			curEnemy: null,
+			coords: null,
+			compShootMatrix: [],
+			compShootMatrixAI: [],
+			compShootMatrixAround: [],
+			compStartPoints: [
+				[ [6,0], [2,0], [0,2], [0,6] ], 
+				[ [3,0], [7,0], [9,2], [9,6] ]
+			],
+			compTempShip: {
+				totalHits: 0,
+				firstHit: {},
+				nextHit: {},
+				dirx: 0,
+				diry: 0
+			}
 		}
-		// this.props.setCurPlayer(userNum);
+		
+		console.log('Controller')
+	}
+	
+	init = function() {
+		try {
+			console.log('init');
+			// console.log('Controller state 1=', this.state);
+			// console.log('Controller props', this.props);
 
-		// чей выстрел следующий
-		// enemy = (player === user1) ? user2 : user1;
+			let self = this;
 
-		// // // массив с координатами выстрелов при рандомном выборе
-		// // user2.shootMatrix = [];
-		// // // массив с координатами выстрелов для AI (компьютер стреляет случайно не по всему полю, 
-		// // // а только по диагоналям)
-		// // user2.shootMatrixAI = [];
-		// // // массив с координатами вокруг клетки с попаданием
-		// // user2.shootMatrixAround = [];
-		// // // массив координат начала циклов
-		// // user2.startPoints = [
-		// // 	[ [6,0], [2,0], [0,2], [0,6] ],
-		// // 	[ [3,0], [7,0], [9,2], [9,6] ]
-		// // ];
+			// рандомно определяем кто будет стрелять первым
+			let rnd = this.getRandom(1);
+			// console.log('rnd=', rnd);
+			
+			let userNum = (rnd === 0) ? 'user1' : 'user2';
+			// this.setState({curPlayer: userNum}); //Can't call setState on a component that is not yet mounted		
+			this.state.curPlayer = userNum;
 
-		// self.resetTempShip();
-		// self.setShootMatrix();
+			// чей выстрел следующий
+			let enemyNum = (this.state.curPlayer === 'user1') ? 'user2' : 'user1';
+			this.state.curEnemy = enemyNum;
+			
+			// console.log('this.state 2=', this.state);
 
-		// // если первым стреляет человек
-		// if (player === user1) {
-		// 	userfield2.addEventListener('click', self.shoot);
-		// 	self.showServiseText('Вы стреляете первым.');
-		// } else {
-		// 	self.showServiseText('Первым стреляет компьютер.');
-		// 	// вызываем функцию выстрела компа
-		// 	setTimeout(function() {
-		// 		return self.shoot();
-		// 	}, 1000);
-		// }
+			// меняем на this.state.comp*
+
+			// // массив с координатами выстрелов при рандомном выборе
+			// shootMatrix = [];
+			// // массив с координатами выстрелов для AI (компьютер стреляет случайно не по всему полю, 
+			// // а только по диагоналям)
+			// shootMatrixAI = [];
+			// // массив с координатами вокруг клетки с попаданием
+			// shootMatrixAround = [];
+			// // массив координат начала циклов
+			// startPoints = [
+			// 	[ [6,0], [2,0], [0,2], [0,6] ],
+			// 	[ [3,0], [7,0], [9,2], [9,6] ]
+			// ];
+
+			self.resetTempShip();
+			self.setShootMatrix();
+
+      let userfield2 = document.querySelector('#field_user2');
+											
+			// если первым стреляет человек
+			if (this.state.curPlayer === 'user1') {
+				userfield2.addEventListener('click', function(e) {
+					// console.log('userfield2 clicked');
+					self.shoot(e);
+				});
+				self.showServiseText('Вы стреляете первым.');
+			} else {
+				self.showServiseText('Первым стреляет компьютер.');
+				// вызываем функцию выстрела компа
+				setTimeout( () => self.shoot(), 1000);
+			}
+    } catch(err) {
+      console.error(err);
+    }
 	}
 
 	// обработка выстрела
 	shoot = function(e) {
     console.log('shoot');
+    // console.log('shoot e', e);
     
-		// // e !== undefined - значит выстрел производит игрок
-		// if (e !== undefined) {
-		// 	// преобразуем координаты выстрела (положения курсора) в координаты матрицы
-		// 	coords = self.transformCoordinates(e, enemy);
-		// } else {
-		// 	// получаем координаты для выстрела компьютера
-		// 	coords = self.getCoordinatesShot();
-		// }
+		let self = this;
+		let matrixEnemy, coords, text;
 
+		// e !== undefined - значит выстрел производит игрок
+		if (e !== undefined) {
+			// преобразуем координаты выстрела (положения курсора) в координаты матрицы
+			coords = self.transformCoordinates(e, this.state.curEnemy);
+
+			matrixEnemy = this.props.matrixUser2;
+		} else {
+			// получаем координаты для выстрела компьютера
+			coords = self.getCoordinatesShot();
+
+			matrixEnemy = this.props.matrixUser1;
+		}
+
+		// console.log('shoot  this.props',  this.props);
+		// console.log('shoot  coords',  coords);
+		// console.log('shoot  matrixEnemy',  matrixEnemy);
+		
 		// // значение матрицы по полученным координатам
-		// let val	= enemy.matrix[coords.x][coords.y];
+		let val = matrixEnemy[coords.x][coords.y];
 
-		// switch(val) {
-		// 	// промах
-		// 	case 0:
-		// 		// ставим точку и записываем промах в матрицу
-		// 		self.showIcons(enemy, coords, 'dot');
-		// 		enemy.matrix[coords.x][coords.y] = 3;
+		switch(val) {
+			// промах
+			case 0:
+				console.log('промах');
+				// ставим точку и записываем промах в матрицу
+				// self.showIcons(enemy, coords, 'dot');
+				// enemy.matrix[coords.x][coords.y] = 3;
 
-		// 		text = (player === user1) ? 'Вы промахнулись. Стреляет компьютер.' : 'Компьютер промахнулся. Ваш выстрел.';
-		// 		self.showServiseText(text);
+				text = (this.state.curPlayer === 'user1') ? 'Вы промахнулись. Стреляет компьютер.' : 'Компьютер промахнулся. Ваш выстрел.';
+				self.showServiseText(text);
 
-		// 		// меняем местами стреляющего и врага
-		// 		player = (player === user1) ? user2 : user1;
-		// 		enemy = (player === user1) ? user2 : user1;
+				// // меняем местами стреляющего и врага
+				// player = (player === user1) ? user2 : user1;
+				// enemy = (player === user1) ? user2 : user1;
 
-		// 		if (player == user2) {
-		// 			userfield2.removeEventListener('click', self.shoot);
+				// if (player == user2) {
+				// 	userfield2.removeEventListener('click', self.shoot);
 
-		// 			if (user2.shootMatrixAround.length == 0) {
-		// 				self.resetTempShip();
-		// 			}
+				// 	if (user2.shootMatrixAround.length == 0) {
+				// 		self.resetTempShip();
+				// 	}
 
-		// 			setTimeout(function() {
-		// 				return self.shoot();
-		// 			}, 1000);
-		// 		} else {
-		// 			userfield2.addEventListener('click', self.shoot);
-		// 		}
-		// 		break;
+				// 	setTimeout(function() {
+				// 		return self.shoot();
+				// 	}, 1000);
+				// } else {
+				// 	userfield2.addEventListener('click', self.shoot);
+				// }
+				break;
 
-		// 	// попадание
-		// 	case 1:
+			// попадание
+			case 1:
+				console.log('попадание');
 		// 		enemy.matrix[coords.x][coords.y] = 4;
 		// 		self.showIcons(enemy, coords, 'red-cross');
-		// 		text = (player === user1) ? 'Поздравляем! Вы попали. Ваш выстрел.' : 'Компьютер попал в ваш корабль. Выстрел компьютера';
-		// 		self.showServiseText(text);
+				text = (this.state.curPlayer === 'user1') ? 'Поздравляем! Вы попали. Ваш выстрел.' : 'Компьютер попал в ваш корабль. Выстрел компьютера';
+				self.showServiseText(text);
 
 		// 		for (let i = enemy.flot.length - 1; i >= 0; i--) {
 		// 			let warship = enemy.flot[i], 
@@ -197,86 +234,94 @@ export default class Controller extends React.Component {
 		// 				}, 1000);
 		// 			}
 		// 		}
-		// 		break;
-		// }
+				break;
+
+			default:
+				// do nothing
+		}
 	}
 
 	showIcons = function(enemy, coords, iconClass) {
     console.log('showIcons');
     
-		// let div = document.createElement('div');
-		// div.className = 'icon-field ' + iconClass;
-		// div.style.cssText = `left: ${coords.y * enemy.shipSide}px; top: ${coords.x * enemy.shipSide}px;`;
-		// enemy.field.appendChild(div);
+		let div = document.createElement('div');
+		div.className = 'icon-field ' + iconClass;
+		div.style.cssText = `left: ${coords.y * enemy.shipSide}px; top: ${coords.x * enemy.shipSide}px;`;
+		enemy.field.appendChild(div);
 	}
 
 	setShootMatrix = function() {
     console.log('setShootMatrix');
     
-		// for (let i = 0; i < 10; i++) {
-		// 	for(let j = 0; j < 10; j++) {
-		// 		user2.shootMatrix.push([i, j]);
-		// 	}
-		// }
+		for (let i = 0; i < 10; i++) {
+			for(let j = 0; j < 10; j++) {
+				this.state.compShootMatrix.push([i, j]);
+			}
+		}
 
-		// for (let i = 0, length = user2.startPoints.length; i < length; i++) {
-		// 	let arr = user2.startPoints[i];
-		// 	for (let j = 0, lh = arr.length; j < lh; j++) {
-		// 		let x = arr[j][0],
-		// 				y = arr[j][1];
+		for (let i = 0, length = this.state.compStartPoints.length; i < length; i++) {
+			let arr = this.state.compStartPoints[i];
+			for (let j = 0, lh = arr.length; j < lh; j++) {
+				let x = arr[j][0],
+						y = arr[j][1];
 
-		// 		switch(i) {
-		// 			case 0:
-		// 				while(x <= 9 && y <= 9) {
-		// 					user2.shootMatrixAI.push([x,y]);
-		// 					x = (x <= 9) ? x : 9;
-		// 					y = (y <= 9) ? y : 9;
-		// 					x++; y++;
-		// 				};
-		// 				break;
+				switch(i) {
+					case 0:
+						while(x <= 9 && y <= 9) {
+							this.state.compShootMatrixAI.push([x,y]);
+							x = (x <= 9) ? x : 9;
+							y = (y <= 9) ? y : 9;
+							x++; y++;
+						};
+						break;
 
-		// 			case 1:
-		// 				while(x >= 0 && x <= 9 && y <= 9) {
-		// 					user2.shootMatrixAI.push([x,y]);
-		// 					x = (x >= 0 && x <= 9) ? x : (x < 0) ? 0 : 9;
-		// 					y = (y <= 9) ? y : 9;
-		// 					x--; y++;
-		// 				};
-		// 				break;
-		// 		}
-		// 	}
-		// }
+					case 1:
+						while(x >= 0 && x <= 9 && y <= 9) {
+							this.state.compShootMatrixAI.push([x,y]);
+							x = (x >= 0 && x <= 9) ? x : (x < 0) ? 0 : 9;
+							y = (y <= 9) ? y : 9;
+							x--; y++;
+						};
+						break;
 
-		// function compareRandom(a, b) {
-		// 	return Math.random() - 0.5;
-		// }
-		// user2.shootMatrix.sort(compareRandom);
-		// user2.shootMatrixAI.sort(compareRandom);
-		// return;
+					default:
+						// do nothing
+				}
+			}
+		}
+
+		function compareRandom(a, b) {
+			return Math.random() - 0.5;
+		}
+		this.state.compShootMatrix.sort(compareRandom);
+		this.state.compShootMatrixAI.sort(compareRandom);
+		return;
 	}
 
 	getCoordinatesShot = function() {
     console.log('getCoordinatesShot');
     
-		// if (user2.shootMatrixAround.length > 0) {
-		// 	coords = user2.shootMatrixAround.pop();
-		// } else if (user2.shootMatrixAI.length > 0) {
-		// 	coords = user2.shootMatrixAI.pop();
-		// } else {
-		// 	coords = user2.shootMatrix.pop();
-		// }
+			let self = this;
 
-		// let obj = {
-		// 	x: coords[0],
-		// 	y: coords[1]
-		// };
+		if (this.state.compShootMatrixAround.length > 0) {
+			this.state.coords = this.state.compShootMatrixAround.pop();
+		} else if (this.state.compShootMatrixAI.length > 0) {
+			this.state.coords = this.state.compShootMatrixAI.pop();
+		} else {
+			this.state.coords = this.state.compShootMatrix.pop();
+		}
 
-		// if (user2.shootMatrixAI.length != 0) {
-		// 	self.deleteElementMatrix(user2.shootMatrixAI, obj);
-		// }
-		// self.deleteElementMatrix(user2.shootMatrix, obj);
+		let obj = {
+			x: this.state.coords[0],
+			y: this.state.coords[1]
+		};
 
-		// return obj;
+		if (this.state.compShootMatrixAI.length !== 0) {
+			self.deleteElementMatrix(this.state.compShootMatrixAI, obj);
+		}
+		self.deleteElementMatrix(this.state.compShootMatrix, obj);
+
+		return obj;
 	}
 
 	setShootMatrixAround = function() {
@@ -323,30 +368,31 @@ export default class Controller extends React.Component {
 	deleteElementMatrix = function(array, obj) {
     console.log('deleteElementMatrix');
     
-		// for (let i = 0, lh = array.length; i < lh; i++) {
-		// 	// удаляем ячейку с координатой выстрела
-		// 	if (array[i][0] == obj.x && array[i][1] == obj.y) {
-		// 		array.splice(i, 1);
-		// 		break;
-		// 	}
-		// }
+		for (let i = 0, lh = array.length; i < lh; i++) {
+			// удаляем ячейку с координатой выстрела
+			if (array[i][0] === obj.x && array[i][1] === obj.y) {
+				array.splice(i, 1);
+				break;
+			}
+		}
 	}
 
 	resetTempShip = function() {
     console.log('resetTempShip');
     
-		// // обнуляем массив с координатами обстрела клеток вокруг попадания
-		// user2.shootMatrixAround = [];
-		// user2.tempShip = {
-		// 	// количество попаданий в корабль
-		// 	totalHits: 0,
-		// 	// объекты для хранения координат первого и второго попадания
-		// 	firstHit: {},
-		// 	nextHit: {},
-		// 	// значения для вычисления координат обстрела "раненого" корабля
-		// 	dirx: 0,
-		// 	diry: 0
-		// };
+		// обнуляем массив с координатами обстрела клеток вокруг попадания
+		this.state.compShootMatrixAround = [];
+		this.state.compTempShip = {
+			// количество попаданий в корабль
+			totalHits: 0,
+			// объекты для хранения координат первого и второго попадания
+			firstHit: {},
+			nextHit: {},
+			// значения для вычисления координат обстрела "раненого" корабля
+			dirx: 0,
+			diry: 0
+		};
+		// console.log('this.state resetTempShip=', this.state);
 	}
 
 	checkMaxDecks = function() {
@@ -396,26 +442,45 @@ export default class Controller extends React.Component {
 	}
 
 	transformCoordinates = function(e, instance) {
-    console.log('transformCoordinates');
-    
-		// // создадим объект, в который запишем полученные координаты матрицы
-		// let obj = {};
-		// // вычисляем ячейку двумерного массива,которая соответствует
-		// // координатам выстрела
-		// obj.x = Math.trunc((e.pageY - instance.fieldX) / instance.shipSide),
-		// obj.y = Math.trunc((e.pageX - instance.fieldY) / instance.shipSide);
-		// return obj;
+		try {
+			console.log('transformCoordinates');
+			// console.log('transformCoordinates e', e);
+			
+			// создадим объект, в который запишем полученные координаты матрицы
+			let obj = {};
+			// let userfield2 = document.querySelector('#field_user2');
+
+			// вычисляем ячейку двумерного массива, которая соответствует координатам выстрела
+			obj.x = Math.trunc((e.pageY - this.props.fieldXUser2) / this.props.shipSide);
+			obj.y = Math.trunc((e.pageX - this.props.fieldYUser2) / this.props.shipSide);
+			return obj;
+		} catch(err) {
+			console.error(err);
+		}
 	}
 
 	// вывод сообщений в ходе игры
 	showServiseText = function(text) {
-    console.log('transformCoordinates');
-    
-		// srvText.innerHTML = text;
-		// // setTimeout("tm = srvText.innerHTML = ''", 1000);
+    // console.log(`showServiseText '${text}'`);
+		let srvText = document.getElementById('text_btm');
+		
+		srvText.innerHTML = text;
+		// setTimeout("srvText.innerHTML = ''", 1000);
 	}
 	
 	getRandom(n) {
 		return Math.floor(Math.random() * (n + 1));
+	}
+	
+	componentDidUpdate() {
+		// console.log('Controller DidUpdate')
+		if (this.props.start === true) {
+			this.init();
+		}
+	}
+	
+	render() {
+		// заглушка
+   return <></>;
 	}
 }

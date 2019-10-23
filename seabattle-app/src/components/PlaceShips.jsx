@@ -2,25 +2,16 @@ import React, {Component} from 'react'
 import Ships from './Ships'
 
 export default class PlaceShips extends Component {
-  // constructor(props) {
-  //   super(props);
+  state = {
+    matrix: null,
+    gameStarted: false
+  }
 
-  //   // this.state = {
-  //   //   randomId: 'random' + this.props.playerNum
-  //   // }
-  // }
-
-  // state = {
-    // user: this.props.user,
-    // shipSide: this.props.shipSide,
-    // shipsData:  this.props.shipsData,
-    // field: this.props.field,
-    // flot: this.props.flot,
-  // }
-  
 	randomLocationShips = function() {
     try {
-      this.matrix = this.createMatrix();  // заполняем базу нулями
+      console.log('randomLocationShips');
+
+      this.state.matrix = this.createMatrix();  // заполняем базу нулями
     
       let length = this.props.shipsData.length;
       let decks;
@@ -44,13 +35,15 @@ export default class PlaceShips extends Component {
             shipname: fieldCoord.shipname,
             shipSide: this.props.shipSide,
             flot: this.props.flot,
-            matrix: this.matrix
+            matrix: this.state.matrix
           });
           
           ship.createShip();
           ship.showShip();
         }
       }
+      this.props.setUserMatrix(this.props.user, this.state.matrix);
+
     } catch(err) {
       console.error(err);
     }
@@ -107,7 +100,7 @@ export default class PlaceShips extends Component {
       // make func
       for (let i = fromX; i < toX; i++) {
       	for (let j = fromY; j < toY; j++) {
-      		if (this.matrix[i][j] === 1) return false;
+      		if (this.state.matrix[i][j] === 1) return false;
       	}
       }
 
@@ -162,15 +155,8 @@ export default class PlaceShips extends Component {
 
 	randomClick = () => {
     try {
-      let userfield = document.getElementById(this.props.randomId)
-                      .parentElement
-                      .parentElement
-                      .querySelector('.ships');
+      this.props.setUserfield();
       
-      this.props.setUserfield(userfield);
-      
-      if (this.props.field === null) return null;
-
       // рандомно расставляем корабли
       this.cleanField();
       this.randomLocationShips();
@@ -179,19 +165,41 @@ export default class PlaceShips extends Component {
     }
 	}
   
+  componentDidUpdate() {
+    try {
+      // console.log('PlaceShips DidUpdate');
+      const start = this.props.start;
+
+      if (start !== undefined && start === true && this.state.gameStarted !== true) {
+        this.cleanField();
+        this.randomLocationShips();
+        this.setState({gameStarted: true});
+      }
+    } catch(err) {
+      console.error(err);
+    }
+  }
+  
   render() {
-    console.log('props PlaceShips 1', this.props);
+    // console.log('placeships state', this.state);
+    let btnPlaceShips;
+    if (this.props.user === 'user1') {
+      btnPlaceShips = <span 
+                        className="link-random" 
+                        id={'random' + this.props.playerNum} 
+                        data-target="random" 
+                        data-hidden="false"
+                        onClick={this.randomClick} 
+                      >
+                        Расставить корабли
+                      </span>
+    } else {
+      btnPlaceShips = <></>
+    }
     
     return (
       <div id="control_btns" className="control-btns" data-hidden="false">
-        <span className="link-random" 
-              id={this.props.randomId} 
-              data-target="random" 
-              data-hidden="false"
-              onClick={this.randomClick}
-        >
-          Расставить корабли
-        </span>
+        {btnPlaceShips}
       </div>
     )
   }

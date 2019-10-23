@@ -1,19 +1,18 @@
 import React, {Component} from 'react'
 import './style.css'
 import PlaceShips from '../PlaceShips'
-// import Ships from '../Ships'
 
 export default class Field extends Component {
 	constructor(props) {
     super(props);
-		const {user, playerNum, playerName} = this.props;
+		const {user, playerNum, playerName, fieldSide, shipSide} = this.props;
 		
 		this.state = {
 			user: user,
 			playerNum: playerNum,
 			playerName: playerName,
-			fieldSide: 330,
-			shipSide: 33,
+			fieldSide: fieldSide,
+			shipSide: shipSide,
 			shipsData: ['',
 												[4, 'fourdeck'],
 												[3, 'tripledeck'],
@@ -21,39 +20,64 @@ export default class Field extends Component {
 												[1, 'singledeck']
 											],
 			field: null,
-			// fieldX: field.getBoundingClientRect().top + window.pageYOffset,
-			// fieldY: field.getBoundingClientRect().left + window.pageXOffset,
-			fieldX: window.pageYOffset,
-			fieldY: window.pageXOffset,
-			fieldRight: this.fieldY + this.fieldSide,
-			fieldBtm: this.fieldX + this.fieldSide,
-      randomId: 'random' + playerNum,
+			fieldX: null,
+			fieldY: null,
+			fieldRight: null,
+			fieldBtm: null,
 			flot: []
 		}
 	}
 
-	setUserfield = function(data) {
-		console.log('parent setUserfield=', data);
-		
-		this.setState({field: data});
-    console.log('new field=', this.state.field);
-	}.bind(this);
+	setUserfield = function() {
+    try {
+      let userfield = document.querySelector('#field_user' + this.state.playerNum);
+      
+      this.setState({field: userfield});
+    } catch(err) {
+      console.error(err);
+    }
+  }.bind(this);
+  
+  async componentDidMount() {
+    try {
+      // await console.log('componentDidMount');
 
-  componentDidMount() {
-    let userfield = document.getElementById(this.state.randomId)
-                    .parentElement
-                    .parentElement
-                    .querySelector('.ships');
-    
-    this.setUserfield(userfield);
+      await this.setUserfield();
+
+      await this.setState({
+        fieldX: this.state.field.getBoundingClientRect().top + window.pageYOffset,
+        fieldY: this.state.field.getBoundingClientRect().left + window.pageXOffset
+      });
+
+      await this.setState({
+        fieldRight: this.state.fieldY + this.state.fieldSide,
+        fieldBtm: this.state.fieldX + this.state.fieldSide
+      });
+      
+      // await console.log('await', this.state);
+
+      await this.props.setUserPos(
+        'user2',
+        this.state.fieldX,
+        this.state.fieldY,
+        this.state.fieldRight,
+        this.state.fieldBtm
+      );
+
+    } catch(err) {
+      console.error(err);
+    }      
   }
   
   render() {
+    // console.log('field state', this.state);
+    const {user, playerNum, playerName, shipSide, shipsData, field, flot} = this.state;
+
     return (
-      <div className={'bfield bfield' + this.state.playerNum}>
-          <p className={'btext btext' + this.state.playerNum}>
-            Игрок {this.state.playerNum}: 
-						<span id={'username' + this.state.playerNum}> {this.state.playerName}</span>
+      <div className={'bfield bfield' + playerNum}>
+          <p className={'btext btext' + playerNum}>
+            Игрок {playerNum}: 
+						<span id={'username' + playerNum}> {playerName}</span>
           </p>
         <div className="field field-user">
           <div className="top-nums">
@@ -80,20 +104,18 @@ export default class Field extends Component {
             <div className="left-num left-num9">И</div>
             <div className="left-num left-num10">К</div>
           </div>
-          <div id={'field_user' + this.state.playerNum} className="ships"></div>
+          <div id={'field_user' + playerNum} className="ships"></div>
         </div>
-				
-      <PlaceShips user={this.state.user}
-                  playerNum={this.state.playerNum}
-                  shipSide={this.state.shipSide}
-                  shipsData={this.state.shipsData}
-                  field={this.state.field}
-                  randomId={this.state.randomId}
-                  flot={this.state.flot}
-                  setUserfield={this.setUserfield}
-      />
-
-      {/* <Ships /> */}
+          
+        <PlaceShips user={user}
+                    playerNum={playerNum}
+                    shipSide={shipSide}
+                    shipsData={shipsData}
+                    field={field}
+                    flot={flot}
+                    setUserfield={this.setUserfield}
+                    setUserMatrix={this.props.setUserMatrix}
+                    start={this.props.start} />
       </div>
 			
     )

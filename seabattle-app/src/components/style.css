@@ -75,7 +75,7 @@ p {
 .control-btns {
 	display: flex;
 	justify-content: center;
-	margin: 50px 0;
+	margin: 10px 0;
 }
 .link-random {
 	display: flex;
