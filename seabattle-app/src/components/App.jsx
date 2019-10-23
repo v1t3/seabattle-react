@@ -7,6 +7,7 @@ import StartGame from './StartGame'
 
 export default class App extends Component {
   state = {
+    start: false,
     user1: {
       name: "user1",
       id: "1",
@@ -30,6 +31,16 @@ export default class App extends Component {
     fieldSide: 330,
     shipSide: 33
   }
+  
+  setStart = function() {
+    try {
+      console.log('setStart');
+
+      if (this.state.start === false) this.setState({start: true});
+    } catch(err) {
+      console.error(err);
+    }
+  }.bind(this);
   
 	setUserMatrix = function(username, data) {
     try {
@@ -112,7 +123,8 @@ export default class App extends Component {
                   fieldSide={fieldSide}
                   shipSide={shipSide}
                   setUserMatrix={this.setUserMatrix}
-                  setUserPos={this.setUserPos} />
+                  setUserPos={this.setUserPos}
+                  start={this.state.start} />
         </div>
         
         <StartGame  matrixUser1={user1.matrix} 
@@ -120,7 +132,9 @@ export default class App extends Component {
                     fieldSide={fieldSide}
                     shipSide={shipSide}
                     fieldXUser2={user2.fieldX}
-                    fieldYUser2={user2.fieldY} />
+                    fieldYUser2={user2.fieldY}
+                    start={this.state.start}
+                    setStart={this.setStart} />
 
         <div id="text_btm" className="text-btm"></div>
 

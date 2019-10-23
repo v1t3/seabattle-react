@@ -3,11 +3,14 @@ import Ships from './Ships'
 
 export default class PlaceShips extends Component {
   state = {
-    matrix: null
+    matrix: null,
+    gameStarted: false
   }
-  
+
 	randomLocationShips = function() {
     try {
+      console.log('randomLocationShips');
+
       this.state.matrix = this.createMatrix();  // заполняем базу нулями
     
       let length = this.props.shipsData.length;
@@ -162,29 +165,41 @@ export default class PlaceShips extends Component {
     }
 	}
   
-  componentDidMount() {
+  componentDidUpdate() {
     try {
-      // console.log(this.props);
-      // this.props.setUserMatrix('user1', '123');
+      // console.log('PlaceShips DidUpdate');
+      const start = this.props.start;
 
+      if (start !== undefined && start === true && this.state.gameStarted !== true) {
+        this.cleanField();
+        this.randomLocationShips();
+        this.setState({gameStarted: true});
+      }
     } catch(err) {
       console.error(err);
     }
   }
-
+  
   render() {
     // console.log('placeships state', this.state);
-
+    let btnPlaceShips;
+    if (this.props.user === 'user1') {
+      btnPlaceShips = <span 
+                        className="link-random" 
+                        id={'random' + this.props.playerNum} 
+                        data-target="random" 
+                        data-hidden="false"
+                        onClick={this.randomClick} 
+                      >
+                        Расставить корабли
+                      </span>
+    } else {
+      btnPlaceShips = <></>
+    }
+    
     return (
       <div id="control_btns" className="control-btns" data-hidden="false">
-        <span className="link-random" 
-              id={this.props.randomId} 
-              data-target="random" 
-              data-hidden="false"
-              onClick={this.randomClick}
-        >
-          Расставить корабли
-        </span>
+        {btnPlaceShips}
       </div>
     )
   }

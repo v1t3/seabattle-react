@@ -24,18 +24,14 @@ export default class Field extends Component {
 			fieldY: null,
 			fieldRight: null,
 			fieldBtm: null,
-      randomId: 'random' + playerNum,
 			flot: []
 		}
 	}
 
 	setUserfield = function() {
     try {
-      let userfield = document.getElementById(this.state.randomId)
-                      .parentElement
-                      .parentElement
-                      .querySelector('.ships');
-
+      let userfield = document.querySelector('#field_user' + this.state.playerNum);
+      
       this.setState({field: userfield});
     } catch(err) {
       console.error(err);
@@ -44,8 +40,8 @@ export default class Field extends Component {
   
   async componentDidMount() {
     try {
-      await console.log('componentDidMount');
-      
+      // await console.log('componentDidMount');
+
       await this.setUserfield();
 
       await this.setState({
@@ -58,7 +54,7 @@ export default class Field extends Component {
         fieldBtm: this.state.fieldX + this.state.fieldSide
       });
       
-      await console.log('await', this.state);
+      // await console.log('await', this.state);
 
       await this.props.setUserPos(
         'user2',
@@ -74,13 +70,14 @@ export default class Field extends Component {
   }
   
   render() {
-    console.log('field state', this.state);
+    // console.log('field state', this.state);
+    const {user, playerNum, playerName, shipSide, shipsData, field, flot} = this.state;
 
     return (
-      <div className={'bfield bfield' + this.state.playerNum}>
-          <p className={'btext btext' + this.state.playerNum}>
-            Игрок {this.state.playerNum}: 
-						<span id={'username' + this.state.playerNum}> {this.state.playerName}</span>
+      <div className={'bfield bfield' + playerNum}>
+          <p className={'btext btext' + playerNum}>
+            Игрок {playerNum}: 
+						<span id={'username' + playerNum}> {playerName}</span>
           </p>
         <div className="field field-user">
           <div className="top-nums">
@@ -107,19 +104,18 @@ export default class Field extends Component {
             <div className="left-num left-num9">И</div>
             <div className="left-num left-num10">К</div>
           </div>
-          <div id={'field_user' + this.state.playerNum} className="ships"></div>
+          <div id={'field_user' + playerNum} className="ships"></div>
         </div>
           
-        <PlaceShips user={this.state.user}
-                    playerNum={this.state.playerNum}
-                    shipSide={this.state.shipSide}
-                    shipsData={this.state.shipsData}
-                    field={this.state.field}
-                    randomId={this.state.randomId}
-                    flot={this.state.flot}
+        <PlaceShips user={user}
+                    playerNum={playerNum}
+                    shipSide={shipSide}
+                    shipsData={shipsData}
+                    field={field}
+                    flot={flot}
                     setUserfield={this.setUserfield}
                     setUserMatrix={this.props.setUserMatrix}
-        />
+                    start={this.props.start} />
       </div>
 			
     )

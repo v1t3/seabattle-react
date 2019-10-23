@@ -1,5 +1,5 @@
 import React from 'react'
-import PlaceShips from './PlaceShips'
+// import PlaceShips from './PlaceShips'
 
 export default class Controller extends React.Component {
 	constructor(props) {
@@ -24,13 +24,15 @@ export default class Controller extends React.Component {
 				diry: 0
 			}
 		}
+		
+		console.log('Controller')
 	}
 	
 	init = function() {
 		try {
 			console.log('init');
-			console.log('Controller state 1=', this.state);
-			console.log('Controller props', this.props);
+			// console.log('Controller state 1=', this.state);
+			// console.log('Controller props', this.props);
 
 			let self = this;
 
@@ -71,7 +73,7 @@ export default class Controller extends React.Component {
 			// если первым стреляет человек
 			if (this.state.curPlayer === 'user1') {
 				userfield2.addEventListener('click', function(e) {
-					console.log('userfield2 clicked');
+					// console.log('userfield2 clicked');
 					self.shoot(e);
 				});
 				self.showServiseText('Вы стреляете первым.');
@@ -91,8 +93,7 @@ export default class Controller extends React.Component {
     // console.log('shoot e', e);
     
 		let self = this;
-		let matrixEnemy;
-		let coords;
+		let matrixEnemy, coords, text;
 
 		// e !== undefined - значит выстрел производит игрок
 		if (e !== undefined) {
@@ -107,9 +108,9 @@ export default class Controller extends React.Component {
 			matrixEnemy = this.props.matrixUser1;
 		}
 
-		console.log('shoot  this.props',  this.props);
-		console.log('shoot  coords',  coords);
-		console.log('shoot  matrixEnemy',  matrixEnemy);
+		// console.log('shoot  this.props',  this.props);
+		// console.log('shoot  coords',  coords);
+		// console.log('shoot  matrixEnemy',  matrixEnemy);
 		
 		// // значение матрицы по полученным координатам
 		let val = matrixEnemy[coords.x][coords.y];
@@ -119,11 +120,11 @@ export default class Controller extends React.Component {
 			case 0:
 				console.log('промах');
 				// ставим точку и записываем промах в матрицу
-				// self.showIcons(this.state.curEnemy, this.state.coords, 'dot');
+				// self.showIcons(enemy, coords, 'dot');
 				// enemy.matrix[coords.x][coords.y] = 3;
 
-				// text = (player === user1) ? 'Вы промахнулись. Стреляет компьютер.' : 'Компьютер промахнулся. Ваш выстрел.';
-				// self.showServiseText(text);
+				text = (this.state.curPlayer === 'user1') ? 'Вы промахнулись. Стреляет компьютер.' : 'Компьютер промахнулся. Ваш выстрел.';
+				self.showServiseText(text);
 
 				// // меняем местами стреляющего и врага
 				// player = (player === user1) ? user2 : user1;
@@ -149,8 +150,8 @@ export default class Controller extends React.Component {
 				console.log('попадание');
 		// 		enemy.matrix[coords.x][coords.y] = 4;
 		// 		self.showIcons(enemy, coords, 'red-cross');
-		// 		text = (player === user1) ? 'Поздравляем! Вы попали. Ваш выстрел.' : 'Компьютер попал в ваш корабль. Выстрел компьютера';
-		// 		self.showServiseText(text);
+				text = (this.state.curPlayer === 'user1') ? 'Поздравляем! Вы попали. Ваш выстрел.' : 'Компьютер попал в ваш корабль. Выстрел компьютера';
+				self.showServiseText(text);
 
 		// 		for (let i = enemy.flot.length - 1; i >= 0; i--) {
 		// 			let warship = enemy.flot[i], 
@@ -234,6 +235,9 @@ export default class Controller extends React.Component {
 		// 			}
 		// 		}
 				break;
+
+			default:
+				// do nothing
 		}
 	}
 
@@ -279,6 +283,9 @@ export default class Controller extends React.Component {
 							x--; y++;
 						};
 						break;
+
+					default:
+						// do nothing
 				}
 			}
 		}
@@ -309,7 +316,7 @@ export default class Controller extends React.Component {
 			y: this.state.coords[1]
 		};
 
-		if (this.state.compShootMatrixAI.length != 0) {
+		if (this.state.compShootMatrixAI.length !== 0) {
 			self.deleteElementMatrix(this.state.compShootMatrixAI, obj);
 		}
 		self.deleteElementMatrix(this.state.compShootMatrix, obj);
@@ -360,12 +367,10 @@ export default class Controller extends React.Component {
 
 	deleteElementMatrix = function(array, obj) {
     console.log('deleteElementMatrix');
-    // console.log('deleteElementMatrix array', array);
-    // console.log('deleteElementMatrix obj', obj);
     
 		for (let i = 0, lh = array.length; i < lh; i++) {
 			// удаляем ячейку с координатой выстрела
-			if (array[i][0] == obj.x && array[i][1] == obj.y) {
+			if (array[i][0] === obj.x && array[i][1] === obj.y) {
 				array.splice(i, 1);
 				break;
 			}
@@ -439,7 +444,7 @@ export default class Controller extends React.Component {
 	transformCoordinates = function(e, instance) {
 		try {
 			console.log('transformCoordinates');
-			console.log('transformCoordinates e', e);
+			// console.log('transformCoordinates e', e);
 			
 			// создадим объект, в который запишем полученные координаты матрицы
 			let obj = {};
@@ -456,14 +461,22 @@ export default class Controller extends React.Component {
 
 	// вывод сообщений в ходе игры
 	showServiseText = function(text) {
-    console.log(`showServiseText '${text}'`);
-    
-		// srvText.innerHTML = text;
-		// // setTimeout("tm = srvText.innerHTML = ''", 1000);
+    // console.log(`showServiseText '${text}'`);
+		let srvText = document.getElementById('text_btm');
+		
+		srvText.innerHTML = text;
+		// setTimeout("srvText.innerHTML = ''", 1000);
 	}
 	
 	getRandom(n) {
 		return Math.floor(Math.random() * (n + 1));
+	}
+	
+	componentDidUpdate() {
+		// console.log('Controller DidUpdate')
+		if (this.props.start === true) {
+			this.init();
+		}
 	}
 	
 	render() {
