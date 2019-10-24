@@ -14,11 +14,11 @@ export default class Field extends Component {
 			fieldSize: fieldSize,
 			shipSize: shipSize,
 			shipsData: ['',
-												[4, 'fourdeck'],
-												[3, 'tripledeck'],
-												[2, 'doubledeck'],
-												[1, 'singledeck']
-											],
+        [4, 'fourdeck'],
+        [3, 'tripledeck'],
+        [2, 'doubledeck'],
+        [1, 'singledeck']
+      ],
 			field: null,
 			fieldX: null,
 			fieldY: null,

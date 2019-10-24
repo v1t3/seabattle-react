@@ -3,7 +3,7 @@ import Ships from './Ships'
 
 export default class PlaceShips extends Component {
   state = {
-    matrix: null
+    matrix: []
   }
 
 	randomLocationShips = function() {
@@ -11,6 +11,7 @@ export default class PlaceShips extends Component {
       console.log('randomLocationShips');
 
       this.state.matrix = this.createMatrix();  // заполняем базу нулями
+			// this.setState({matrix: this.createMatrix()});
     
       let length = this.props.shipsData.length;
       let decks;

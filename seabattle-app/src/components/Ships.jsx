@@ -2,7 +2,11 @@ import React, {Component} from 'react'
 
 export default class Ships extends Component {  
   state = {
-    shipMatrix: []
+    shipMatrix: [],
+    hits: 0,
+    decks: this.props.decks,
+    x: this.props.x,
+    y: this.props.y,
   }
 		
 	createShip = function() {
