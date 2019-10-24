@@ -69,10 +69,7 @@ export default class Controller extends React.Component {
 
 			// если первым стреляет человек
 			if (this.state.curPlayer === 'user1') {
-				userfield2.addEventListener('click', function(e) {
-					// console.log('userfield2 clicked');
-					self.shoot(e);
-				});
+				userfield2.addEventListener('click', function(e) {self.shoot(e) });
 				self.showServiseText('Вы стреляете первым.');
 			} else {
 				self.showServiseText('Первым стреляет компьютер.');
@@ -148,7 +145,7 @@ export default class Controller extends React.Component {
 				// console.log('curEnemy 20=', this.state.curEnemy);
 
 				if (this.state.curPlayer === 'user2') {
-					userfield2.removeEventListener('click', function(e) {self.shoot(e)});
+					userfield2.removeEventListener('click', function(e) {self.shoot(e)} );
 
 					if (this.state.compShootMatrixAround.length === 0) {
 						self.resetTempShip();
@@ -158,7 +155,7 @@ export default class Controller extends React.Component {
 						return self.shoot();
 					}, 1000);
 				} else {
-					userfield2.addEventListener('click', function(e) {self.shoot(e)});
+					userfield2.addEventListener('click', function(e) {self.shoot(e)} );
 				}
 				break;
 
