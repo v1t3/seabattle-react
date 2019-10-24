@@ -25,8 +25,8 @@ export default class StartGame extends Component {
       // let battle = new Controller({
       //   matrixUser1: this.props.matrixUser1,
       //   matrixUser2: this.props.matrixUser2,
-      //   fieldSide: this.props.fieldSide,
-      //   shipSide: this.props.shipSide,
+      //   fieldSize: this.props.fieldSize,
+      //   shipSize: this.props.shipSize,
       //   fieldXUser2: this.props.fieldXUser2,
       //   fieldYUser2: this.props.fieldYUser2
       // });
@@ -40,17 +40,28 @@ export default class StartGame extends Component {
 
   render() {
 		// console.log('StartGame this.props',  this.props);
+    const {start, gameStarted, 
+            matrixUser1, flotUser1, 
+            matrixUser2, fieldXUser2, fieldYUser2, flotUser2, 
+            fieldSize, shipSize, 
+            setAppState, setGameStarted} = this.props;
+    
     return (
       <div className="control-btns" data-hidden="false">
         <span id="play" className="btn-play" data-hidden="true" onClick={this.playClick}>Играть</span>
 
-        <Controller matrixUser1={this.props.matrixUser1}
-                    matrixUser2={this.props.matrixUser2}
-                    fieldSide={this.props.fieldSide}
-                    shipSide={this.props.shipSide}
-                    fieldXUser2={this.props.fieldXUser2}
-                    fieldYUser2={this.props.fieldYUser2}
-                    start={this.props.start} />
+        <Controller matrixUser1={matrixUser1}
+                    matrixUser2={matrixUser2}
+                    fieldXUser2={fieldXUser2}
+                    fieldYUser2={fieldYUser2}
+                    flotUser1={flotUser1}
+                    flotUser2={flotUser2}
+                    fieldSize={fieldSize}
+                    shipSize={shipSize}
+                    start={start}
+                    gameStarted={gameStarted}
+                    setAppState={setAppState}
+                    setGameStarted={setGameStarted} />
       </div>
     )
   }

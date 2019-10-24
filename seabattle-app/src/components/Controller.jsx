@@ -1,11 +1,19 @@
 import React from 'react'
 // import PlaceShips from './PlaceShips'
 
+let self = this;
+
 export default class Controller extends React.Component {
 	constructor(props) {
 		super(props);
+		const {matrixUser1, matrixUser2, flotUser1, flotUser2, shipSize} = this.props;
 
 		this.state = {
+			matrixUser1: matrixUser1,
+			matrixUser2: matrixUser2,
+			flotUser1: flotUser1,
+			flotUser2: flotUser2,
+			shipSize: shipSize,
 			curPlayer: null,
 			curEnemy: null,
 			coords: null,
@@ -24,6 +32,9 @@ export default class Controller extends React.Component {
 				diry: 0
 			}
 		}
+
+		// this.init = this.init.bind(this);
+		this.shoot = this.shoot.bind(this);
 		
 		console.log('Controller')
 	}
@@ -31,45 +42,31 @@ export default class Controller extends React.Component {
 	init = function() {
 		try {
 			console.log('init');
-			// console.log('Controller state 1=', this.state);
-			// console.log('Controller props', this.props);
+			// console.log('init state 1=', this.state);
+			// console.log('init props', this.props);
+			this.props.setGameStarted();
 
-			let self = this;
+			self = this;
 
 			// рандомно определяем кто будет стрелять первым
 			let rnd = this.getRandom(1);
-			// console.log('rnd=', rnd);
+			console.log('rnd=', rnd);
 			
 			let userNum = (rnd === 0) ? 'user1' : 'user2';
 			// this.setState({curPlayer: userNum}); //Can't call setState on a component that is not yet mounted		
 			this.state.curPlayer = userNum;
+			console.log('curPlayer=', this.state.curPlayer);
 
 			// чей выстрел следующий
 			let enemyNum = (this.state.curPlayer === 'user1') ? 'user2' : 'user1';
 			this.state.curEnemy = enemyNum;
+			console.log('curEnemy=', this.state.curEnemy);
 			
-			// console.log('this.state 2=', this.state);
-
-			// меняем на this.state.comp*
-
-			// // массив с координатами выстрелов при рандомном выборе
-			// shootMatrix = [];
-			// // массив с координатами выстрелов для AI (компьютер стреляет случайно не по всему полю, 
-			// // а только по диагоналям)
-			// shootMatrixAI = [];
-			// // массив с координатами вокруг клетки с попаданием
-			// shootMatrixAround = [];
-			// // массив координат начала циклов
-			// startPoints = [
-			// 	[ [6,0], [2,0], [0,2], [0,6] ],
-			// 	[ [3,0], [7,0], [9,2], [9,6] ]
-			// ];
-
 			self.resetTempShip();
 			self.setShootMatrix();
 
       let userfield2 = document.querySelector('#field_user2');
-											
+
 			// если первым стреляет человек
 			if (this.state.curPlayer === 'user1') {
 				userfield2.addEventListener('click', function(e) {
@@ -90,27 +87,40 @@ export default class Controller extends React.Component {
 	// обработка выстрела
 	shoot = function(e) {
     console.log('shoot');
-    // console.log('shoot e', e);
+		console.log('shoot e', e);
+		
+		console.log('this 1=', this);
+		console.log('this.state 1=', this.state);
+		console.log('this.props 1=', this.props);
+		// let {matrixUser1, matrixUser2, flotUser1, flotUser2, shipSize} = this.props;
+		
+		console.log('curPlayer 1=', this.state.curPlayer);
+		console.log('curEnemy 1=', this.state.curEnemy);
     
-		let self = this;
-		let matrixEnemy, coords, text;
+		// let self = this;
+		let matrixEnemy, coords, text, flotEnemy;
+		let userfield2 = document.querySelector('#field_user2');
 
 		// e !== undefined - значит выстрел производит игрок
 		if (e !== undefined) {
 			// преобразуем координаты выстрела (положения курсора) в координаты матрицы
 			coords = self.transformCoordinates(e, this.state.curEnemy);
 
-			matrixEnemy = this.props.matrixUser2;
+			matrixEnemy = this.state.matrixUser2;
+			flotEnemy = this.state.flotUser2;
 		} else {
 			// получаем координаты для выстрела компьютера
 			coords = self.getCoordinatesShot();
 
-			matrixEnemy = this.props.matrixUser1;
+			matrixEnemy = this.state.matrixUser1;
+			flotEnemy = this.state.flotUser1;
 		}
 
-		// console.log('shoot  this.props',  this.props);
-		// console.log('shoot  coords',  coords);
-		// console.log('shoot  matrixEnemy',  matrixEnemy);
+		console.log('shoot this.state',  this.state);
+		console.log('shoot coords',  coords);
+		console.log('shoot curEnemy', this.state.curEnemy);
+		console.log('shoot matrixEnemy', matrixEnemy);
+		console.log('shoot flotEnemy', flotEnemy);
 		
 		// // значение матрицы по полученным координатам
 		let val = matrixEnemy[coords.x][coords.y];
@@ -121,124 +131,146 @@ export default class Controller extends React.Component {
 				console.log('промах');
 				// ставим точку и записываем промах в матрицу
 				self.showIcons(this.state.curEnemy, coords, 'dot');
-				// enemy.matrix[coords.x][coords.y] = 3;
+
+				matrixEnemy[coords.x][coords.y] = 3;
+				// запись в state App данные по матрице поля
+				// this.props.setAppState(this.state.curEnemy, 'matrix', matrixEnemy);
+
 
 				text = (this.state.curPlayer === 'user1') ? 'Вы промахнулись. Стреляет компьютер.' : 'Компьютер промахнулся. Ваш выстрел.';
 				self.showServiseText(text);
 
 				// // меняем местами стреляющего и врага
-				// player = (player === user1) ? user2 : user1;
-				// enemy = (player === user1) ? user2 : user1;
+				this.state.curPlayer = (this.state.curPlayer === 'user1') ? 'user2' : 'user1';
+				this.state.curEnemy = (this.state.curPlayer === 'user1') ? 'user2' : 'user1';
 
-				// if (player == user2) {
-				// 	userfield2.removeEventListener('click', self.shoot);
+				console.log('curPlayer 20=', this.state.curPlayer);
+				console.log('curEnemy 20=', this.state.curEnemy);
 
-				// 	if (user2.shootMatrixAround.length == 0) {
-				// 		self.resetTempShip();
-				// 	}
+				if (this.state.curPlayer === 'user2') {
+					userfield2.removeEventListener('click', function(e) {self.shoot(e)});
 
-				// 	setTimeout(function() {
-				// 		return self.shoot();
-				// 	}, 1000);
-				// } else {
-				// 	userfield2.addEventListener('click', self.shoot);
-				// }
+					if (this.state.compShootMatrixAround.length === 0) {
+						self.resetTempShip();
+					}
+
+					setTimeout(() => {
+						return self.shoot();
+					}, 1000);
+				} else {
+					userfield2.addEventListener('click', function(e) {self.shoot(e)});
+				}
 				break;
 
 			// попадание
 			case 1:
 				console.log('попадание');
-		// 		enemy.matrix[coords.x][coords.y] = 4;
+
 				self.showIcons(this.state.curEnemy, coords, 'red-cross');
+				matrixEnemy[coords.x][coords.y] = 4;
+
+				// this.props.setAppState(this.state.curEnemy, 'matrix', matrixEnemy);
+
 				text = (this.state.curPlayer === 'user1') ? 'Поздравляем! Вы попали. Ваш выстрел.' : 'Компьютер попал в ваш корабль. Выстрел компьютера';
 				self.showServiseText(text);
+				
+				// console.log('flotEnemy', flotEnemy);
+				// console.log('flotEnemy state', flotEnemy[0].state);
+				// console.log('flotEnemy props', flotEnemy[0].props);
 
-		// 		for (let i = enemy.flot.length - 1; i >= 0; i--) {
-		// 			let warship = enemy.flot[i], 
-		// 					arrayDescks = warship.matrix;
+				for (let i = flotEnemy.length - 1; i >= 0; i--) {
+					let warship = flotEnemy[i], 
+							arrayDescks = warship.state.shipMatrix;
+					console.log('warship', warship);
+					console.log('arrayDescks', arrayDescks);
 
-		// 			for (let j = 0, length = arrayDescks.length; j < length; j++) {
-		// 				if (arrayDescks[j][0] == coords.x && arrayDescks[j][1] == coords.y) {
-		// 					warship.hits++;
+					for (let j = 0, length = arrayDescks.length; j < length; j++) {
+						if (arrayDescks[j][0] === coords.x && arrayDescks[j][1] === coords.y) {
+							warship.hits++;
 
-		// 					if (warship.hits == warship.decks) {
-		// 						if (player === user2) {
-		// 							user2.tempShip.x0 = warship.x0;
-		// 							user2.tempShip.y0 = warship.y0;
-		// 						}
-		// 						enemy.flot.splice(i, 1);
-		// 					}
-		// 					break;
-		// 				}
-		// 			}
-		// 		}
+							if (warship.hits === warship.decks) {
+								if (this.state.curPlayer === 'user2') {
+									this.state.compTempShip.x0 = warship.x0;
+									this.state.compTempShip.y0 = warship.y0;
+								}
+								flotEnemy.splice(i, 1);
+							}
+							break;
+						}
+					}
+				}
 
-		// 		if (enemy.flot.length == 0) {
-		// 			text = (player === user1) ? 'Поздравляем! Вы выиграли.' : 'К сожалению, вы проиграли.';
-		// 			srvText.innerHTML = text + ' <a id="one_more_time" href="#" onClick="window.location.reload()">Ещё раз!</a>';
+				if (flotEnemy.length === 0) {
+					text = (this.state.curPlayer === 'user1') ? 'Поздравляем! Вы выиграли.' : 'К сожалению, вы проиграли.';
+					
+					// let srvText = document.getElementById('text_btm');
+					// srvText.innerHTML = text + ' <a id="one_more_time" href="#" onClick="window.location.reload()">Ещё раз!</a>';
+					self.showServiseText(text + ' <a id="one_more_time" href="#" onClick="window.location.reload()">Ещё раз!</a>');
 
-		// 			if (player == user1) {
-		// 				userfield2.removeEventListener('click', self.shoot);
-		// 			} else {
-		// 				for (let i = 0, length = user2.flot.length; i < length; i++) {
-		// 					let div = document.createElement('div'),
-		// 							dir_v = (user2.flot[i].dir == 1) ? ' vertical' : '',
-		// 							classname	= user2.flot[i].shipname.slice(0, -1);
+					if (this.state.curPlayer === 'user1') {
+						userfield2.removeEventListener('click', function(e) {self.shoot(e)});
+					} else {
+						for (let i = 0, length = this.state.flotUser2.length; i < length; i++) {
+							let div = document.createElement('div'),
+									dir_v = (this.state.flotUser2[i].dir === 1) ? ' vertical' : '',
+									classname	= this.state.flotUser2[i].shipname.slice(0, -1);
 
-		// 					div.className = 'ship ' + classname + dir_v;
-		// 					div.style.cssText = `left: ${user2.flot[i].y0 * user2.shipSide}px; 
-		// 																top: ${user2.flot[i].x0 * user2.shipSide}px;`;
-		// 					user2.field.appendChild(div);
-		// 				}
-		// 			}
-		// 		// бой продолжается
-		// 		} else {
-		// 			if (player === user2) {
-		// 				user2.tempShip.totalHits++;
-		// 				let points	= [
-		// 					[coords.x - 1, coords.y - 1],
-		// 					[coords.x - 1, coords.y + 1],
-		// 					[coords.x + 1, coords.y - 1],
-		// 					[coords.x + 1, coords.y + 1]
-		// 				];
-		// 				self.markEmptyCell(points);
+							div.className = 'ship ' + classname + dir_v;
+							div.style.cssText = `left: ${this.state.flotUser2[i].y0 * this.state.shipSize}px; 
+																		top: ${this.state.flotUser2[i].x0 * this.state.shipSize}px;`;
+							userfield2.appendChild(div);
+						}
+					}
+				// бой продолжается
+				} else {
+					if (this.state.curPlayer === 'user2') {
+						this.state.compTempShip.totalHits++;
+						let points	= [
+							[coords.x - 1, coords.y - 1],
+							[coords.x - 1, coords.y + 1],
+							[coords.x + 1, coords.y - 1],
+							[coords.x + 1, coords.y + 1]
+						];
+						self.markEmptyCell(points);
 
-		// 				let max = self.checkMaxDecks();
+						let max = self.checkMaxDecks();
 
-		// 				if (user2.tempShip.totalHits >= max) {
-		// 					if (user2.tempShip.totalHits == 1) {
-		// 						points = [
-		// 							[user2.tempShip.x0 - 1, user2.tempShip.y0],
-		// 							[user2.tempShip.x0 + 1, user2.tempShip.y0],
-		// 							[user2.tempShip.x0, user2.tempShip.y0 - 1],
-		// 							[user2.tempShip.x0, user2.tempShip.y0 + 1],
-		// 						];
-		// 					} else {
-		// 						let x1 = user2.tempShip.x0 - user2.tempShip.dirx,
-		// 								y1 = user2.tempShip.y0 - user2.tempShip.diry,
-		// 								x2 = user2.tempShip.x0 + user2.tempShip.dirx * user2.tempShip.totalHits,
-		// 								y2 = user2.tempShip.y0 + user2.tempShip.diry * user2.tempShip.totalHits;
+						if (this.state.compTempShip.totalHits >= max) {
+							if (this.state.compTempShip.totalHits === 1) {
+								points = [
+									[this.state.compTempShip.x0 - 1, this.state.compTempShip.y0],
+									[this.state.compTempShip.x0 + 1, this.state.compTempShip.y0],
+									[this.state.compTempShip.x0, this.state.compTempShip.y0 - 1],
+									[this.state.compTempShip.x0, this.state.compTempShip.y0 + 1],
+								];
+							} else {
+								let x1 = this.state.compTempShip.x0 - this.state.compTempShip.dirx,
+										y1 = this.state.compTempShip.y0 - this.state.compTempShip.diry,
+										x2 = this.state.compTempShip.x0 + this.state.compTempShip.dirx * this.state.compTempShip.totalHits,
+										y2 = this.state.compTempShip.y0 + this.state.compTempShip.diry * this.state.compTempShip.totalHits;
 										
-		// 						points = [
-		// 							[x1, y1],
-		// 							[x2, y2]
-		// 						];
-		// 					}
-		// 					self.resetTempShip();
-		// 				} else {
-		// 					self.setShootMatrixAround();
-		// 				}
+								points = [
+									[x1, y1],
+									[x2, y2]
+								];
+							}
+							self.resetTempShip();
+						} else {
+							self.setShootMatrixAround();
+						}
 
-		// 				setTimeout(function() {
-		// 					return self.shoot();
-		// 				}, 1000);
-		// 			}
-		// 		}
+						setTimeout(function() {
+							return self.shoot();
+						}, 1000);
+					}
+				}
 				break;
 
 			default:
 				// do nothing
 		}
+		console.log('curPlayer 3=', this.state.curPlayer);
+		console.log('curEnemy 3=', this.state.curEnemy);
 	}
 
 	showIcons = function(enemy, coords, iconClass) {
@@ -247,7 +279,8 @@ export default class Controller extends React.Component {
     
 		let div = document.createElement('div');
 		div.className = 'icon-field ' + iconClass;
-		div.style.cssText = `left: ${coords.y * this.props.shipSide}px; top: ${coords.x * this.props.shipSide}px;`;
+		div.style.cssText = `left: ${coords.y * this.state.shipSize}px; 
+													top: ${coords.x * this.state.shipSize}px;`;
 		field.appendChild(div);
 	}
 
@@ -302,7 +335,7 @@ export default class Controller extends React.Component {
 	getCoordinatesShot = function() {
     console.log('getCoordinatesShot');
     
-			let self = this;
+			// let self = this;
 
 		if (this.state.compShootMatrixAround.length > 0) {
 			this.state.coords = this.state.compShootMatrixAround.pop();
@@ -452,8 +485,8 @@ export default class Controller extends React.Component {
 			// let userfield2 = document.querySelector('#field_user2');
 
 			// вычисляем ячейку двумерного массива, которая соответствует координатам выстрела
-			obj.x = Math.trunc((e.pageY - this.props.fieldXUser2) / this.props.shipSide);
-			obj.y = Math.trunc((e.pageX - this.props.fieldYUser2) / this.props.shipSide);
+			obj.x = Math.trunc((e.pageY - this.props.fieldXUser2) / this.state.shipSize);
+			obj.y = Math.trunc((e.pageX - this.props.fieldYUser2) / this.state.shipSize);
 			return obj;
 		} catch(err) {
 			console.error(err);
@@ -473,14 +506,29 @@ export default class Controller extends React.Component {
 		return Math.floor(Math.random() * (n + 1));
 	}
 	
-	componentDidUpdate() {
+	componentDidUpdate(prevProps, prevState) {
 		// console.log('Controller DidUpdate')
-		if (this.props.start === true) {
+		if (this.props.start === true && this.props.gameStarted === false) {
 			this.init();
+		}
+
+		if (this.props.matrixUser1 !== prevProps.matrixUser1) {
+			this.setState({matrixUser1: this.props.matrixUser1});
+		}
+		if (this.props.matrixUser2 !== prevProps.matrixUser2) {
+			this.setState({matrixUser2: this.props.matrixUser2});
+		}
+		if (this.props.flotUser1 !== prevProps.flotUser1) {
+			this.setState({flotUser1: this.props.flotUser1});
+		}
+		if (this.props.flotUser1 !== prevProps.flotUser1) {
+			this.setState({flotUser1: this.props.flotUser1});
 		}
 	}
 	
 	render() {
+		console.log('Controller this.props',  this.props);
+		console.log('Controller this.state',  this.state);
 		// заглушка
    return <></>;
 	}

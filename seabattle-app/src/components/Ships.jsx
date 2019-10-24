@@ -37,7 +37,7 @@ export default class Ships extends Component {
 
 	showShip = function() {
     try {
-      let {dir, shipname, x, y, shipSide} = this.props;
+      let {dir, shipname, x, y, shipSize} = this.props;
       let div = document.createElement('div'),
           dir_v = (dir === 1) ? ' vertical' : '',
           classname	= shipname.slice(0, -1);
@@ -46,8 +46,8 @@ export default class Ships extends Component {
       div.setAttribute('id', shipname);
       div.className = 'ship ' + classname + dir_v;
       // задаём позиционирование кораблю
-      div.style.cssText = `left: ${y * shipSide}px; 
-                           top: ${x * shipSide}px;`;
+      div.style.cssText = `left: ${y * shipSize}px; 
+                           top: ${x * shipSize}px;`;
 
       this.props.field.appendChild(div);
     } catch(err) {
