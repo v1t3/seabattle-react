@@ -30,9 +30,6 @@ export default class Controller extends React.Component {
 				diry: 0
 			}
 		}
-
-		// this.init = this.init.bind(this);
-		// this.shoot = this.shoot.bind(this);
 		
 		console.log('Controller')
 	}
@@ -47,28 +44,24 @@ export default class Controller extends React.Component {
 
 			self = this;
 			// рандомно определяем кто будет стрелять первым
-			let rnd = this.getRandom(1);
-			// console.log('rnd=', rnd);
-			
+			let rnd = this.getRandom(1);			
 			let userNum = (rnd === 0) ? 'user1' : 'user2';
-			await this.setState({curPlayer: userNum});	
-			// this.state.curPlayer = userNum;
+			await this.setState({curPlayer: userNum});
 			// console.log('curPlayer=', this.state.curPlayer);
 
 			// чей выстрел следующий
 			let enemyNum = (this.state.curPlayer === 'user1') ? 'user2' : 'user1';
 			await this.setState({curEnemy: enemyNum});
-			// this.state.curEnemy = enemyNum;
 			// console.log('curEnemy=', this.state.curEnemy);
 			
 			self.resetTempShip();
 			self.setShootMatrix();
 
       let userfield2 = document.querySelector('#field_user2');
+			userfield2.addEventListener('click', self.shoot.bind(this) );
 
 			// если первым стреляет человек
 			if (this.state.curPlayer === 'user1') {
-				userfield2.addEventListener('click', self.shoot.bind(this) );
 				self.showServiseText('Вы стреляете первым.');
 			} else {
 				self.showServiseText('Первым стреляет компьютер.');
@@ -83,17 +76,8 @@ export default class Controller extends React.Component {
 	// обработка выстрела
 	shoot = function(e) {
     console.log('shoot');
-		// console.log('shoot e', e);
-		
-		// console.log('this 1=', this);
 		console.log('this.state 1=', this.state);
-		// console.log('this.props 1=', this.props);
-		// let {matrixUser1, matrixUser2, flotUser1, flotUser2, shipSize} = this.props;
-		
-		// console.log('curPlayer 1=', this.state.curPlayer);
-		// console.log('curEnemy 1=', this.state.curEnemy);
-    
-		// let self = this;
+		    
 		let matrixEnemy, coords, text, flotEnemy;
 		let userfield2 = document.querySelector('#field_user2');
 
@@ -114,14 +98,8 @@ export default class Controller extends React.Component {
 			matrixEnemy = this.state.matrixUser1;
 			flotEnemy = this.state.flotUser1;
 		}
-
-		// console.log('shoot this.state',  this.state);
-		// console.log('shoot coords',  coords);
-		// console.log('shoot curEnemy', this.state.curEnemy);
-		// console.log('shoot matrixEnemy', matrixEnemy);
-		// console.log('shoot flotEnemy', flotEnemy);
 		
-		// // значение матрицы по полученным координатам
+		// значение матрицы по полученным координатам
 		let val = matrixEnemy[coords.x][coords.y];
 
 		switch(val) {
@@ -130,11 +108,7 @@ export default class Controller extends React.Component {
 				console.log('промах');
 				// ставим точку и записываем промах в матрицу
 				self.showIcons(this.state.curEnemy, coords, 'dot');
-
 				matrixEnemy[coords.x][coords.y] = 3;
-				// запись в state App данные по матрице поля
-				// this.props.setAppState(this.state.curEnemy, 'matrix', matrixEnemy);
-
 
 				text = (this.state.curPlayer === 'user1') ? 'Вы промахнулись. Стреляет компьютер.' : 'Компьютер промахнулся. Ваш выстрел.';
 				self.showServiseText(text);
@@ -143,12 +117,7 @@ export default class Controller extends React.Component {
 				this.state.curPlayer = (this.state.curPlayer === 'user1') ? 'user2' : 'user1';
 				this.state.curEnemy = (this.state.curPlayer === 'user1') ? 'user2' : 'user1';
 
-				// console.log('curPlayer 20=', this.state.curPlayer);
-				// console.log('curEnemy 20=', this.state.curEnemy);
-
 				if (this.state.curPlayer === 'user2') {
-					userfield2.removeEventListener('click', self.shoot.bind(this) );
-
 					if (this.state.compShootMatrixAround.length === 0) {
 						self.resetTempShip();
 					}
@@ -156,8 +125,6 @@ export default class Controller extends React.Component {
 					setTimeout(() => {
 						return self.shoot();
 					}, 1000);
-				} else {
-					userfield2.addEventListener('click', self.shoot.bind(this) );
 				}
 				break;
 
@@ -195,9 +162,7 @@ export default class Controller extends React.Component {
 						}
 					}
 				}
-
-				// console.log('curEnemy', this.state.curEnemy);
-				// console.log('flotEnemy.length', flotEnemy.length);
+				
 				if (flotEnemy.length === 0) {
 					// конец игры
 					console.log('конец игры');
@@ -226,8 +191,10 @@ export default class Controller extends React.Component {
 						self.markEmptyCell(points);
 
 						let max = self.checkMaxDecks();
+						console.log('max 1', max);
 
 						if (this.state.compTempShip.totalHits >= max) {
+							console.log('max 2', max);
 							if (this.state.compTempShip.totalHits === 1) {
 								points = [
 									[this.state.compTempShip.x0 - 1, this.state.compTempShip.y0],
@@ -261,8 +228,6 @@ export default class Controller extends React.Component {
 			default:
 				// do nothing
 		}
-		// console.log('curPlayer 3=', this.state.curPlayer);
-		// console.log('curEnemy 3=', this.state.curEnemy);
 	}
 
 	showIcons = function(enemy, coords, iconClass) {
@@ -278,8 +243,7 @@ export default class Controller extends React.Component {
 	}
 
 	setShootMatrix = function() {
-    // console.log('setShootMatrix');
-    
+    // console.log('setShootMatrix');    
 		for (let i = 0; i < 10; i++) {
 			for(let j = 0; j < 10; j++) {
 				this.state.compShootMatrix.push([i, j]);
@@ -327,8 +291,6 @@ export default class Controller extends React.Component {
 
 	getCoordinatesShot = function() {
     console.log('getCoordinatesShot');
-    
-			// let self = this;
 
 		if (this.state.compShootMatrixAround.length > 0) {
 			this.state.coords = this.state.compShootMatrixAround.pop();
@@ -424,14 +386,15 @@ export default class Controller extends React.Component {
 
 	checkMaxDecks = function() {
     console.log('checkMaxDecks');
+    // console.log('flotUser1', this.state.flotUser1);
     
-		// let arr = [];
-		// for (let i = 0, length = user1.flot.length; i < length; i++) {
-		// 	// записываем в массив кол-во палуб у оставшихся кораблей
-		// 	arr.push(user1.flot[i].decks);
-		// }
-		// // возвращаем max значение
-		// return Math.max.apply(null, arr);
+		let arr = [];
+		for (let i = 0, length = this.state.flotUser1.length; i < length; i++) {
+			// записываем в массив кол-во палуб у оставшихся кораблей
+			arr.push(this.state.flotUser1[i].state.decks);
+		}
+		// возвращаем max значение
+		return Math.max.apply(null, arr);
 	}
 
 	markEmptyCell = function(points) {

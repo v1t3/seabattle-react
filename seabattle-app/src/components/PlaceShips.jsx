@@ -167,7 +167,6 @@ export default class PlaceShips extends Component {
   
   componentDidUpdate() {
     try {
-      // console.log('PlaceShips DidUpdate');
       const start = this.props.start;
 
       if (start !== undefined && start === true && this.props.gameStarted === false) {

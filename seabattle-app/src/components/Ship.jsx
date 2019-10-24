@@ -11,7 +11,7 @@ export default class Ship extends Component {
 		
 	createShip = function() {
     try {
-      let {dir, decks, x, y, player} = this.props;
+      const {dir, decks, x, y, player} = this.props;
       let k = 0;
           
       // количество циклов будет равно количеству палуб создаваемого корабля

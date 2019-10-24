@@ -23,8 +23,7 @@ export default class Field extends Component {
 			fieldX: null,
 			fieldY: null,
 			fieldRight: null,
-			fieldBtm: null,
-			// flot: []
+			fieldBtm: null
 		}
 	}
 
@@ -41,7 +40,6 @@ export default class Field extends Component {
   async componentDidMount() {
     try {
       // await console.log('componentDidMount');
-
       await this.setUserfield();
 
       await this.setState({
@@ -53,8 +51,6 @@ export default class Field extends Component {
         fieldRight: this.state.fieldY + this.state.fieldSize,
         fieldBtm: this.state.fieldX + this.state.fieldSize
       });
-      
-      // await console.log('await', this.state);
 
       await this.props.setUserPos(
         'user2',
