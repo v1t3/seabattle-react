@@ -1,5 +1,4 @@
 import React from 'react'
-// import PlaceShips from './PlaceShips'
 
 let self = this;
 

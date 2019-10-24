@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-export default class Ships extends Component {  
+export default class Ship extends Component {  
   state = {
     shipMatrix: [],
     hits: 0,

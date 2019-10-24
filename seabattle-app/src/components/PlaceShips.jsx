@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import Ships from './Ships'
+import Ship from './Ship'
 
 export default class PlaceShips extends Component {
   state = {
@@ -25,7 +25,7 @@ export default class PlaceShips extends Component {
           fieldCoord.decks = decks;
           fieldCoord.shipname	= this.props.shipsData[i][1] + String(j + 1);
     
-          let ship = new Ships({
+          let ship = new Ship({
             x: fieldCoord.x,
             y: fieldCoord.y,
             dir: fieldCoord.dir,
