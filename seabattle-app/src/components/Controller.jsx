@@ -31,7 +31,7 @@ export default class Controller extends React.Component {
 			}
 		}
 		
-		console.log('Controller')
+		// console.log('Controller')
 	}
 	
 	async init() {
@@ -75,8 +75,10 @@ export default class Controller extends React.Component {
 
 	// обработка выстрела
 	shoot = function(e) {
+    console.log('');
     console.log('shoot');
-		console.log('this.state 1=', this.state);
+		// console.log('this.state 1=', this.state);
+		// console.log('this.state.coords', this.state.coords);
 		    
 		let matrixEnemy, coords, text, flotEnemy;
 		let userfield2 = document.querySelector('#field_user2');
@@ -87,13 +89,15 @@ export default class Controller extends React.Component {
 			if (this.state.flotUser1.length === 0 || this.state.flotUser2.length === 0)	return;
 
 			// преобразуем координаты выстрела (положения курсора) в координаты матрицы
-			coords = self.transformCoordinates(e, this.state.curEnemy);
+			// coords = self.transformCoordinates(e, this.state.curEnemy);
+			coords = self.transformCoordinates(e);
 
 			matrixEnemy = this.state.matrixUser2;
 			flotEnemy = this.state.flotUser2;
 		} else {
 			// получаем координаты для выстрела компьютера
 			coords = self.getCoordinatesShot();
+			// console.log('coords', coords);
 
 			matrixEnemy = this.state.matrixUser1;
 			flotEnemy = this.state.flotUser1;
@@ -191,10 +195,10 @@ export default class Controller extends React.Component {
 						self.markEmptyCell(points);
 
 						let max = self.checkMaxDecks();
-						console.log('max 1', max);
+						// console.log('max', max);
+						// console.log('this.state.compTempShip.totalHits', this.state.compTempShip.totalHits);
 
 						if (this.state.compTempShip.totalHits >= max) {
-							console.log('max 2', max);
 							if (this.state.compTempShip.totalHits === 1) {
 								points = [
 									[this.state.compTempShip.x0 - 1, this.state.compTempShip.y0],
@@ -228,6 +232,8 @@ export default class Controller extends React.Component {
 			default:
 				// do nothing
 		}
+		// console.log('this.state.coords', this.state.coords);
+		// console.log('coords', coords);
 	}
 
 	showIcons = function(enemy, coords, iconClass) {
@@ -313,43 +319,53 @@ export default class Controller extends React.Component {
 		return obj;
 	}
 
-	setShootMatrixAround = function() {
-    console.log('setShootMatrixAround');
-    
-		// if (user2.tempShip.dirx == 0 && user2.tempShip.diry == 0) {
-		// 	if (Object.keys(user2.tempShip.firstHit).length === 0) {
-		// 		user2.tempShip.firstHit = coords;
-		// 	} else {
-		// 		user2.tempShip.nextHit = coords;
-		// 		user2.tempShip.dirx = (Math.abs(user2.tempShip.firstHit.x - user2.tempShip.nextHit.x) == 1) ? 1 : 0;
-		// 		user2.tempShip.diry = (Math.abs(user2.tempShip.firstHit.y - user2.tempShip.nextHit.y) == 1) ? 1 : 0;
-		// 	}
-		// }
+	setShootMatrixAround() {
+		console.log('setShootMatrixAround');
+		const {compTempShip, coords, compShootMatrixAround, compShootMatrix, matrixUser1} = this.state;
+		// console.log('compTempShip', compTempShip);
+		// console.log('this.state.coords 2', this.state.coords);
+		// console.log('coords 2', coords);
+		// console.log('compShootMatrixAround', compShootMatrixAround);
+		
+		// тут coords.x - coords[0], coords.y - coords[1]
+		if (compTempShip.dirx === 0 && compTempShip.diry === 0) {
+			if (Object.keys(compTempShip.firstHit).length === 0) {
+				this.state.compTempShip.firstHit = coords;
+			} else {
+				this.state.compTempShip.nextHit = coords;
+				this.state.compTempShip.dirx = (Math.abs(compTempShip.firstHit[0] - compTempShip.nextHit[0]) === 1) ? 1 : 0;
+				this.state.compTempShip.diry = (Math.abs(compTempShip.firstHit[1] - compTempShip.nextHit[1]) === 1) ? 1 : 0;
+			}
+		}
 
-		// // корабль расположен вертикально
-		// if (coords.x > 0 && user2.tempShip.diry == 0) user2.shootMatrixAround.push([coords.x - 1, coords.y]);
-		// if (coords.x < 9 && user2.tempShip.diry == 0) user2.shootMatrixAround.push([coords.x + 1, coords.y]);
-		// // корабль расположен горизонтально
-		// if (coords.y > 0 && user2.tempShip.dirx == 0) user2.shootMatrixAround.push([coords.x, coords.y - 1]);
-		// if (coords.y < 9 && user2.tempShip.dirx == 0) user2.shootMatrixAround.push([coords.x, coords.y + 1]);
+		// корабль расположен вертикально
+		if (coords[0] > 0 && compTempShip.diry === 0) this.state.compShootMatrixAround.push([coords[0] - 1, coords[1]]);
+		if (coords[0] < 9 && compTempShip.diry === 0) this.state.compShootMatrixAround.push([coords[0] + 1, coords[1]]);
+		// корабль расположен горизонтально
+		if (coords[1] > 0 && compTempShip.dirx === 0) this.state.compShootMatrixAround.push([coords[0], coords[1] - 1]);
+		if (coords[1] < 9 && compTempShip.dirx === 0) this.state.compShootMatrixAround.push([coords[0], coords[1] + 1]);
 
-		// // необходимо проверить их валидность
-		// // координата валидна, если значение массива не равно или 2 (гарантированно пустая клетка), 
-		// // или 3 (промах), или 4 (попадание)
-		// for (let i = user2.shootMatrixAround.length - 1; i >= 0; i--) {
-		// 	// координаты возможного выстрела
-		// 	let x = user2.shootMatrixAround[i][0],
-		// 			y = user2.shootMatrixAround[i][1];
+		// необходимо проверить их валидность
+		// координата валидна, если значение массива не равно или 2 (гарантированно пустая клетка), 
+		// или 3 (промах), или 4 (попадание)
+		for (let i = compShootMatrixAround.length - 1; i >= 0; i--) {
+			// координаты возможного выстрела
+			let x = compShootMatrixAround[i][0],
+					y = compShootMatrixAround[i][1];
 			
-		// 	if (user1.matrix[x][y] !== 0 && user1.matrix[x][y] !== 1) {
-		// 		user2.shootMatrixAround.splice(i,1);
-		// 		self.deleteElementMatrix(user2.shootMatrix, coords);
-		// 	}
-		// }
-		// if (user2.shootMatrixAround.length == 0) {
-		// 	// корабль потоплен, сбрасываем свойства объекта tempShip
-		// 	self.resetTempShip();
-		// }
+			if (matrixUser1[x][y] !== 0 && matrixUser1[x][y] !== 1) {
+				compShootMatrixAround.splice(i,1);
+				self.deleteElementMatrix(compShootMatrix, coords);
+			}
+		}
+		if (compShootMatrixAround.length === 0) {
+			// корабль потоплен, сбрасываем свойства объекта tempShip
+			self.resetTempShip();
+		}
+		
+		// console.log('compTempShip', compTempShip);
+		// console.log('compShootMatrixAround', compShootMatrixAround);
+		// console.log('compShootMatrix', compShootMatrix);
 
 		// return;
 	}
@@ -431,14 +447,10 @@ export default class Controller extends React.Component {
 		// }
 	}
 
-	transformCoordinates = function(e, instance) {
+	transformCoordinates = function(e) {
 		try {
-			console.log('transformCoordinates');
-			// console.log('transformCoordinates e', e);
-			
-			// создадим объект, в который запишем полученные координаты матрицы
+			// console.log('transformCoordinates');
 			let obj = {};
-			// let userfield2 = document.querySelector('#field_user2');
 
 			// вычисляем ячейку двумерного массива, которая соответствует координатам выстрела
 			obj.x = Math.trunc((e.pageY - this.props.fieldXUser2) / this.props.shipSize);
@@ -450,9 +462,7 @@ export default class Controller extends React.Component {
 	}
 
 	showServiseText = function(text) {
-    // console.log(`showServiseText '${text}'`);
 		let srvText = document.getElementById('text_btm');
-		
 		srvText.innerHTML = text;
 		// setTimeout("srvText.innerHTML = ''", 1000);
 	}
@@ -461,7 +471,7 @@ export default class Controller extends React.Component {
 		return Math.floor(Math.random() * (n + 1));
 	}
 	
-	componentDidUpdate(prevProps, prevState) {
+	componentDidUpdate(prevProps) {
 		// console.log('Controller DidUpdate')
 		if (this.props.start === true && this.props.gameStarted === false) {
 			this.init();

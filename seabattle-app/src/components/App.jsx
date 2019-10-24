@@ -33,7 +33,7 @@ export default class App extends Component {
   
   setStart = function() {
     try {
-      console.log('setStart');
+      // console.log('setStart');
 
       if (this.state.start === false) this.setState({start: true});
     } catch(err) {
@@ -43,7 +43,7 @@ export default class App extends Component {
 
   setGameStarted = function() {
     try {
-      console.log('setGameStarted');
+      // console.log('setGameStarted');
 
       if (this.state.gameStarted === false) this.setState({gameStarted: true});
     } catch(err) {
@@ -53,10 +53,7 @@ export default class App extends Component {
   
 	setAppState = function(username, param, data) {
     try {
-      console.log('setAppState');
-      // console.log('setAppState username', username);
-      // console.log('setAppState param', param);
-      // console.log('setAppState data', data);
+      // console.log('setAppState');
       let userState = username + param;
 
       this.setState({
