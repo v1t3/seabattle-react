@@ -43,13 +43,13 @@ export default class Controller extends React.Component {
 			console.log('init');
 			// console.log('init state 1=', this.state);
 			// console.log('init props', this.props);
+			
 			this.props.setGameStarted();
 
 			self = this;
-
 			// рандомно определяем кто будет стрелять первым
 			let rnd = this.getRandom(1);
-			console.log('rnd=', rnd);
+			// console.log('rnd=', rnd);
 			
 			let userNum = (rnd === 0) ? 'user1' : 'user2';
 			await this.setState({curPlayer: userNum});	
@@ -69,7 +69,7 @@ export default class Controller extends React.Component {
 
 			// если первым стреляет человек
 			if (this.state.curPlayer === 'user1') {
-				userfield2.addEventListener('click', function(e) {self.shoot(e) });
+				userfield2.addEventListener('click', self.shoot.bind(this) );
 				self.showServiseText('Вы стреляете первым.');
 			} else {
 				self.showServiseText('Первым стреляет компьютер.');
@@ -100,6 +100,9 @@ export default class Controller extends React.Component {
 
 		// e !== undefined - значит выстрел производит игрок
 		if (e !== undefined) {
+			if (this.state.curPlayer === 'user2') return;
+			if (this.state.flotUser1.length === 0 || this.state.flotUser2.length === 0)	return;
+
 			// преобразуем координаты выстрела (положения курсора) в координаты матрицы
 			coords = self.transformCoordinates(e, this.state.curEnemy);
 
@@ -145,7 +148,7 @@ export default class Controller extends React.Component {
 				// console.log('curEnemy 20=', this.state.curEnemy);
 
 				if (this.state.curPlayer === 'user2') {
-					userfield2.removeEventListener('click', function(e) {self.shoot(e)} );
+					userfield2.removeEventListener('click', self.shoot.bind(this) );
 
 					if (this.state.compShootMatrixAround.length === 0) {
 						self.resetTempShip();
@@ -155,7 +158,7 @@ export default class Controller extends React.Component {
 						return self.shoot();
 					}, 1000);
 				} else {
-					userfield2.addEventListener('click', function(e) {self.shoot(e)} );
+					userfield2.addEventListener('click', self.shoot.bind(this) );
 				}
 				break;
 
@@ -198,19 +201,21 @@ export default class Controller extends React.Component {
 				// console.log('flotEnemy.length', flotEnemy.length);
 				if (flotEnemy.length === 0) {
 					// конец игры
+					console.log('конец игры');
+					
 					text = (this.state.curPlayer === 'user1') ? 'Поздравляем! Вы выиграли.' : 'К сожалению, вы проиграли.';
 					
 					// заменить на смену состояния и очистку поля
 					self.showServiseText(text + ' <a id="one_more_time" href="#" onClick="window.location.reload()">Ещё раз!</a>');
 
-					if (this.state.curPlayer === 'user1') {
-						userfield2.removeEventListener('click', function(e) {self.shoot(e)});
-					} else {
-						// вставить переключение состояния отображения кораблей компа
-						// 
-					}
-				// бой продолжается
+					userfield2.removeEventListener('click', self.shoot.bind(this) );
+
+					// вставить переключение состояния отображения кораблей компа
+					// 
+					// 
+
 				} else {
+					// бой продолжается
 					if (this.state.curPlayer === 'user2') {
 						this.state.compTempShip.totalHits++;
 						let points	= [
