@@ -19,7 +19,7 @@ export default class PopupName extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.setAppState('user1', 'playerName', this.state.value);
+    if (this.state.value !== '') this.props.setAppState('user1', 'playerName', this.state.value);
     document.querySelector('#popup').setAttribute('data-hidden', true);
   }
 

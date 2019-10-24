@@ -351,12 +351,12 @@ export default class Controller extends React.Component {
 	resetTempShip = function() {
 		// обнуляем массив с координатами обстрела клеток вокруг попадания
 		this.setState({compShootMatrixAround: []});
-		// 	// количество попаданий в корабль
+		// количество попаданий в корабль
 		this.setState((prevState) => {prevState.compTempShip.totalHits = 0 });
-		// 	// объекты для хранения координат первого и второго попадания
+		// объекты для хранения координат первого и второго попадания
 		this.setState((prevState) => {prevState.compTempShip.firstHit = {} });
 		this.setState((prevState) => {prevState.compTempShip.nextHit = {} });
-		// 	// значения для вычисления координат обстрела "раненого" корабля
+		// значения для вычисления координат обстрела "раненого" корабля
 		this.setState((prevState) => {prevState.compTempShip.dirx = 0 });
 		this.setState((prevState) => {prevState.compTempShip.diry = 0 });
 	}

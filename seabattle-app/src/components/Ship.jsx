@@ -19,7 +19,7 @@ export default class Ship extends Component {
       	// записываем координаты корабля в матрицу игрового поля
       	this.props.matrix[x + k * dir][y + k * !dir] = 1;
       	// записываем координаты корабля в матрицу экземпляра корабля
-      	this.state.shipMatrix.push([x + k * dir, y + k * !dir]);    // возможно уже не нужно
+      	this.state.shipMatrix.push([x + k * dir, y + k * !dir]);
     
       	k++;
       }
