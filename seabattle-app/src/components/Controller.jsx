@@ -181,41 +181,24 @@ export default class Controller extends React.Component {
 							// console.log(`arrayDescks`, arrayDescks);
 
 					for (let j = 0, length = arrayDescks.length; j < length; j++) {
-						// console.log(`for j=${j}`);
-
-						// console.log(`arrayDescks[${j}][0]`, arrayDescks[j][0]);
-						// console.log(`coords.x`, coords.x);
-						// console.log(`arrayDescks[${j}][1]`, arrayDescks[j][1]);
-						// console.log(`coords.y`, coords.y);
-
 						if (arrayDescks[j][0] === coords.x && arrayDescks[j][1] === coords.y) {
 							warship.state.hits++;
 
-							console.log(`warship.hits`, warship.state.hits);
-							console.log(`warship.decks`, warship.state.decks);
-
 							if (warship.state.hits === warship.state.decks) {
-								console.log(`hits = decks`);
-
 								if (this.state.curPlayer === 'user2') {
-									console.log(`this.state.compTempShip 2`, this.state.compTempShip);
-
 									this.state.compTempShip.x0 = warship.state.x;
 									this.state.compTempShip.y0 = warship.state.y;
-										
-									console.log(`this.state.compTempShip 2`, this.state.compTempShip);
 								}
-								console.log('flotEnemy.length 1', flotEnemy.length);
+
 								flotEnemy.splice(i, 1);
-								console.log('flotEnemy.length 2', flotEnemy.length);
 							}
 							break;
 						}
 					}
 				}
 
-				console.log('curEnemy', this.state.curEnemy);
-				console.log('flotEnemy.length', flotEnemy.length);
+				// console.log('curEnemy', this.state.curEnemy);
+				// console.log('flotEnemy.length', flotEnemy.length);
 				if (flotEnemy.length === 0) {
 					// конец игры
 					text = (this.state.curPlayer === 'user1') ? 'Поздравляем! Вы выиграли.' : 'К сожалению, вы проиграли.';
