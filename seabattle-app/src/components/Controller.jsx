@@ -74,11 +74,14 @@ export default class Controller extends React.Component {
 	}
 
 	// обработка выстрела
-	shoot = function(e) {
+	async shoot(e) {
     console.log('');
     console.log('shoot');
-		// console.log('this.state 1=', this.state);
+		console.log('shoot this.state 1=', this.state);
 		// console.log('this.state.coords', this.state.coords);
+		
+		// console.log('curPlayer 1', this.state.curPlayer);
+		// console.log('curEnemy 1', this.state.curEnemy);
 		    
 		let matrixEnemy, coords, text, flotEnemy;
 		let userfield2 = document.querySelector('#field_user2');
@@ -118,8 +121,14 @@ export default class Controller extends React.Component {
 				self.showServiseText(text);
 
 				// // меняем местами стреляющего и врага
-				this.state.curPlayer = (this.state.curPlayer === 'user1') ? 'user2' : 'user1';
-				this.state.curEnemy = (this.state.curPlayer === 'user1') ? 'user2' : 'user1';
+				let curPlayerName = (this.state.curPlayer === 'user1') ? 'user2' : 'user1';
+				let curEnemyName = (this.state.curEnemy === 'user1') ? 'user2' : 'user1';
+				await this.setState({
+					curPlayer: curPlayerName,
+					curEnemy: curEnemyName
+				})
+				// console.log('curPlayer 20', this.state.curPlayer);
+				// console.log('curEnemy 20', this.state.curEnemy);
 
 				if (this.state.curPlayer === 'user2') {
 					if (this.state.compShootMatrixAround.length === 0) {
@@ -232,6 +241,8 @@ export default class Controller extends React.Component {
 			default:
 				// do nothing
 		}
+		// console.log('curPlayer 3', this.state.curPlayer);
+		// console.log('curEnemy 3', this.state.curEnemy);
 		// console.log('this.state.coords', this.state.coords);
 		// console.log('coords', coords);
 	}
@@ -297,13 +308,18 @@ export default class Controller extends React.Component {
 
 	getCoordinatesShot = function() {
     console.log('getCoordinatesShot');
-
 		if (this.state.compShootMatrixAround.length > 0) {
-			this.state.coords = this.state.compShootMatrixAround.pop();
+			// this.state.coords = this.state.compShootMatrixAround.pop();
+			let coordsState = this.state.compShootMatrixAround.pop();
+			this.setState({coords: coordsState});
 		} else if (this.state.compShootMatrixAI.length > 0) {
-			this.state.coords = this.state.compShootMatrixAI.pop();
+			// this.state.coords = this.state.compShootMatrixAI.pop();
+			let coordsState = this.state.compShootMatrixAI.pop();
+			this.setState({coords: coordsState});
 		} else {
-			this.state.coords = this.state.compShootMatrix.pop();
+			// this.state.coords = this.state.compShootMatrix.pop();
+			let coordsState = this.state.compShootMatrix.pop();
+			this.setState({coords: coordsState});
 		}
 
 		let obj = {
@@ -322,7 +338,10 @@ export default class Controller extends React.Component {
 	setShootMatrixAround() {
 		console.log('setShootMatrixAround');
 		const {compTempShip, coords, compShootMatrixAround, compShootMatrix, matrixUser1} = this.state;
-		// console.log('compTempShip', compTempShip);
+		// console.log('compTempShip.firstHit', compTempShip.firstHit);
+		// console.log('compTempShip.nextHit', compTempShip.nextHit);
+		// console.log('compTempShip.dirx', compTempShip.dirx);
+		// console.log('compTempShip.diry', compTempShip.diry);
 		// console.log('this.state.coords 2', this.state.coords);
 		// console.log('coords 2', coords);
 		// console.log('compShootMatrixAround', compShootMatrixAround);
@@ -330,13 +349,23 @@ export default class Controller extends React.Component {
 		// тут coords.x - coords[0], coords.y - coords[1]
 		if (compTempShip.dirx === 0 && compTempShip.diry === 0) {
 			if (Object.keys(compTempShip.firstHit).length === 0) {
-				this.state.compTempShip.firstHit = coords;
+				let tempShipFirstHit = coords;
+				this.setState((prevState) => prevState.compTempShip.firstHit = tempShipFirstHit);
 			} else {
-				this.state.compTempShip.nextHit = coords;
-				this.state.compTempShip.dirx = (Math.abs(compTempShip.firstHit[0] - compTempShip.nextHit[0]) === 1) ? 1 : 0;
-				this.state.compTempShip.diry = (Math.abs(compTempShip.firstHit[1] - compTempShip.nextHit[1]) === 1) ? 1 : 0;
+				let tempShipNextHit, tempShipDirx, tempShipDiry;
+				tempShipNextHit = coords;
+				tempShipDirx = (Math.abs(compTempShip.firstHit[0] - compTempShip.nextHit[0]) === 1) ? 1 : 0;
+				tempShipDiry = (Math.abs(compTempShip.firstHit[1] - compTempShip.nextHit[1]) === 1) ? 1 : 0;
+				
+				this.setState((prevState) => prevState.compTempShip.nextHit = tempShipNextHit);
+				this.setState((prevState) => prevState.compTempShip.dirx = tempShipDirx);
+				this.setState((prevState) => prevState.compTempShip.diry = tempShipDiry);
 			}
 		}
+		// console.log('compTempShip.firstHit 2', compTempShip.firstHit);
+		// console.log('compTempShip.nextHit 2', compTempShip.nextHit);
+		// console.log('compTempShip.dirx 2', compTempShip.dirx);
+		// console.log('compTempShip.diry 2', compTempShip.diry);
 
 		// корабль расположен вертикально
 		if (coords[0] > 0 && compTempShip.diry === 0) this.state.compShootMatrixAround.push([coords[0] - 1, coords[1]]);
@@ -386,17 +415,24 @@ export default class Controller extends React.Component {
     console.log('resetTempShip');
     
 		// обнуляем массив с координатами обстрела клеток вокруг попадания
-		this.state.compShootMatrixAround = [];
-		this.state.compTempShip = {
-			// количество попаданий в корабль
-			totalHits: 0,
-			// объекты для хранения координат первого и второго попадания
-			firstHit: {},
-			nextHit: {},
-			// значения для вычисления координат обстрела "раненого" корабля
-			dirx: 0,
-			diry: 0
-		};
+		// this.state.compShootMatrixAround = [];
+		// this.state.compTempShip = {
+		// 	// количество попаданий в корабль
+		// 	totalHits: 0,
+		// 	// объекты для хранения координат первого и второго попадания
+		// 	firstHit: {},
+		// 	nextHit: {},
+		// 	// значения для вычисления координат обстрела "раненого" корабля
+		// 	dirx: 0,
+		// 	diry: 0
+		// };
+		this.setState({compShootMatrixAround: []});
+		this.setState((prevState) => prevState.compTempShip.totalHits = 0 );
+		this.setState((prevState) => prevState.compTempShip.firstHit = {} );
+		this.setState((prevState) => prevState.compTempShip.nextHit = {} );
+		this.setState((prevState) => prevState.compTempShip.dirx = 0 );
+		this.setState((prevState) => prevState.compTempShip.diry = 0 );
+
 		// console.log('this.state resetTempShip=', this.state);
 	}
 
