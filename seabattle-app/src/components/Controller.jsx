@@ -217,6 +217,7 @@ export default class Controller extends React.Component {
 				console.log('curEnemy', this.state.curEnemy);
 				console.log('flotEnemy.length', flotEnemy.length);
 				if (flotEnemy.length === 0) {
+					// конец игры
 					text = (this.state.curPlayer === 'user1') ? 'Поздравляем! Вы выиграли.' : 'К сожалению, вы проиграли.';
 					
 					// заменить на смену состояния и очистку поля
@@ -225,16 +226,8 @@ export default class Controller extends React.Component {
 					if (this.state.curPlayer === 'user1') {
 						userfield2.removeEventListener('click', function(e) {self.shoot(e)});
 					} else {
-						for (let i = 0, length = this.state.flotUser2.length; i < length; i++) {
-							let div = document.createElement('div'),
-									dir_v = (this.state.flotUser2[i].dir === 1) ? ' vertical' : '',
-									classname	= this.state.flotUser2[i].shipname.slice(0, -1);
-
-							div.className = 'ship ' + classname + dir_v;
-							div.style.cssText = `left: ${this.state.flotUser2[i].y0 * this.props.shipSize}px; 
-																		top: ${this.state.flotUser2[i].x0 * this.props.shipSize}px;`;
-							userfield2.appendChild(div);
-						}
+						// вставить переключение состояния отображения кораблей компа
+						// 
 					}
 				// бой продолжается
 				} else {
