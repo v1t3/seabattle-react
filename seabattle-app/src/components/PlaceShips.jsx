@@ -3,8 +3,7 @@ import Ships from './Ships'
 
 export default class PlaceShips extends Component {
   state = {
-    matrix: null,
-    gameStarted: false
+    matrix: []
   }
 
 	randomLocationShips = function() {
@@ -12,6 +11,7 @@ export default class PlaceShips extends Component {
       console.log('randomLocationShips');
 
       this.state.matrix = this.createMatrix();  // заполняем базу нулями
+			// this.setState({matrix: this.createMatrix()});
     
       let length = this.props.shipsData.length;
       let decks;
@@ -33,7 +33,7 @@ export default class PlaceShips extends Component {
             player: this.props.user,
             field: this.props.field,
             shipname: fieldCoord.shipname,
-            shipSide: this.props.shipSide,
+            shipSize: this.props.shipSize,
             flot: this.props.flot,
             matrix: this.state.matrix
           });
@@ -42,7 +42,7 @@ export default class PlaceShips extends Component {
           ship.showShip();
         }
       }
-      this.props.setUserMatrix(this.props.user, this.state.matrix);
+      this.props.setAppState(this.props.user, 'matrix', this.state.matrix);
 
     } catch(err) {
       console.error(err);
@@ -170,10 +170,9 @@ export default class PlaceShips extends Component {
       // console.log('PlaceShips DidUpdate');
       const start = this.props.start;
 
-      if (start !== undefined && start === true && this.state.gameStarted !== true) {
+      if (start !== undefined && start === true && this.props.gameStarted === false) {
         this.cleanField();
         this.randomLocationShips();
-        this.setState({gameStarted: true});
       }
     } catch(err) {
       console.error(err);

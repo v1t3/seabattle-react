@@ -5,26 +5,26 @@ import PlaceShips from '../PlaceShips'
 export default class Field extends Component {
 	constructor(props) {
     super(props);
-		const {user, playerNum, playerName, fieldSide, shipSide} = this.props;
+		const {user, playerNum, playerName, fieldSize, shipSize} = this.props;
 		
 		this.state = {
 			user: user,
 			playerNum: playerNum,
 			playerName: playerName,
-			fieldSide: fieldSide,
-			shipSide: shipSide,
+			fieldSize: fieldSize,
+			shipSize: shipSize,
 			shipsData: ['',
-												[4, 'fourdeck'],
-												[3, 'tripledeck'],
-												[2, 'doubledeck'],
-												[1, 'singledeck']
-											],
+        [4, 'fourdeck'],
+        [3, 'tripledeck'],
+        [2, 'doubledeck'],
+        [1, 'singledeck']
+      ],
 			field: null,
 			fieldX: null,
 			fieldY: null,
 			fieldRight: null,
 			fieldBtm: null,
-			flot: []
+			// flot: []
 		}
 	}
 
@@ -50,8 +50,8 @@ export default class Field extends Component {
       });
 
       await this.setState({
-        fieldRight: this.state.fieldY + this.state.fieldSide,
-        fieldBtm: this.state.fieldX + this.state.fieldSide
+        fieldRight: this.state.fieldY + this.state.fieldSize,
+        fieldBtm: this.state.fieldX + this.state.fieldSize
       });
       
       // await console.log('await', this.state);
@@ -71,7 +71,7 @@ export default class Field extends Component {
   
   render() {
     // console.log('field state', this.state);
-    const {user, playerNum, playerName, shipSide, shipsData, field, flot} = this.state;
+    const {user, playerNum, playerName, shipSize, shipsData, field} = this.state;
 
     return (
       <div className={'bfield bfield' + playerNum}>
@@ -109,13 +109,14 @@ export default class Field extends Component {
           
         <PlaceShips user={user}
                     playerNum={playerNum}
-                    shipSide={shipSide}
+                    shipSize={shipSize}
                     shipsData={shipsData}
                     field={field}
-                    flot={flot}
+                    flot={this.props.flot}
                     setUserfield={this.setUserfield}
-                    setUserMatrix={this.props.setUserMatrix}
-                    start={this.props.start} />
+                    setAppState={this.props.setAppState}
+                    start={this.props.start}
+                    gameStarted={this.props.gameStarted} />
       </div>
 			
     )
