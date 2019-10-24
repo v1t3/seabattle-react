@@ -30,7 +30,6 @@ export default class Field extends Component {
 	setUserfield = function() {
     try {
       let userfield = document.querySelector('#field_user' + this.state.playerNum);
-      
       this.setState({field: userfield});
     } catch(err) {
       console.error(err);
@@ -39,7 +38,6 @@ export default class Field extends Component {
   
   async componentDidMount() {
     try {
-      // await console.log('componentDidMount');
       await this.setUserfield();
 
       await this.setState({
@@ -65,10 +63,14 @@ export default class Field extends Component {
     }      
   }
   
+	componentDidUpdate(prevProps) {
+		if (this.props.playerName !== prevProps.playerName) {
+			this.setState({playerName: this.props.playerName});
+		}
+  }
+  
   render() {
-    // console.log('field state', this.state);
     const {user, playerNum, playerName, shipSize, shipsData, field} = this.state;
-
     return (
       <div className={'bfield bfield' + playerNum}>
           <p className={'btext btext' + playerNum}>
@@ -114,7 +116,6 @@ export default class Field extends Component {
                     start={this.props.start}
                     gameStarted={this.props.gameStarted} />
       </div>
-			
     )
   }
 }

@@ -8,9 +8,7 @@ export default class PlaceShips extends Component {
 
 	async randomLocationShips() {
     try {
-      console.log('randomLocationShips');
-
-      // this.state.matrix = this.createMatrix();  // заполняем базу нулями
+      // заполняем базу нулями
 			await this.setState({matrix: this.createMatrix()});
     
       let length = this.props.shipsData.length;
@@ -42,8 +40,9 @@ export default class PlaceShips extends Component {
           ship.showShip();
         }
       }
-      this.props.setAppState(this.props.user, 'matrix', this.state.matrix);
 
+      // закинем матрицу кораблей в App
+      this.props.setAppState(this.props.user, 'matrix', this.state.matrix);
     } catch(err) {
       console.error(err);
     }
@@ -51,8 +50,7 @@ export default class PlaceShips extends Component {
 
 	getCoordinatesDecks = function(decks) {
     try {
-      let x, y,
-          dir = this.getRandom(1);
+      let x, y, dir = this.getRandom(1);
     
       if (dir === 0) {
       	x = this.getRandom(9);
@@ -114,7 +112,6 @@ export default class PlaceShips extends Component {
     try {
       let parent = this.props.field;
       let id = parent.getAttribute('id');
-
       // получаем коллекцию все кораблей, которые нужно удалить
       let divs = document.querySelectorAll(`#${id} > div`);
     
@@ -179,7 +176,6 @@ export default class PlaceShips extends Component {
   }
   
   render() {
-    // console.log('placeships state', this.state);
     let btnPlaceShips;
     if (this.props.user === 'user1') {
       btnPlaceShips = <span 
@@ -188,9 +184,7 @@ export default class PlaceShips extends Component {
                         data-target="random" 
                         data-hidden="false"
                         onClick={this.randomClick} 
-                      >
-                        Расставить корабли
-                      </span>
+                      >Расставить корабли</span>
     } else {
       btnPlaceShips = <></>
     }

@@ -60,8 +60,6 @@ export default class Ship extends Component {
 	}
 
   render() {
-    return (
-      <div></div>
-    )
+    return <></>;
   }
 }

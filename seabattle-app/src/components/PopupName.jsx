@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 
-export default 
-class PopupName extends Component {
+export default class PopupName extends Component {
   constructor(props) {
     super(props);
     
@@ -20,7 +19,7 @@ class PopupName extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    document.querySelector('#username1').innerHTML = this.state.value;
+    this.props.setAppState('user1', 'playerName', this.state.value);
     document.querySelector('#popup').setAttribute('data-hidden', true);
   }
 

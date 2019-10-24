@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import './style.css'
 import Field from './Field/'
 import StartGame from './StartGame'
-// import Rules from './Rules'
-// import PopupName from './PopupName'
+import Rules from './Rules'
+import PopupName from './PopupName'
 
 export default class App extends Component {
   state = {
@@ -33,8 +33,6 @@ export default class App extends Component {
   
   setStart = function() {
     try {
-      // console.log('setStart');
-
       if (this.state.start === false) this.setState({start: true});
     } catch(err) {
       console.error(err);
@@ -43,8 +41,6 @@ export default class App extends Component {
 
   setGameStarted = function() {
     try {
-      // console.log('setGameStarted');
-
       if (this.state.gameStarted === false) this.setState({gameStarted: true});
     } catch(err) {
       console.error(err);
@@ -53,7 +49,6 @@ export default class App extends Component {
   
 	setAppState = function(username, param, data) {
     try {
-      // console.log('setAppState');
       let userState = username + param;
 
       this.setState({
@@ -63,29 +58,9 @@ export default class App extends Component {
       console.error(err);
     }
   }.bind(this);
-  
-	// setUserMatrix = function(username, data) {
-  //   try {
-  //     console.log('setUserMatrix');
-
-  //     if (username === 'user1') {
-  //       this.setState({
-  //         user1matrix: data
-  //       });
-  //     } else {
-  //       this.setState({
-  //         user2matrix: data
-  //       });
-  //     }
-  //   } catch(err) {
-  //     console.error(err);
-  //   }
-  // }.bind(this);
 
 	setUserPos = function(username, fieldX, fieldY, fieldRight, fieldBtm) {
     try {
-      // console.log('setUserPos');
-
       if (username === 'user2') {
         this.setState({
           user2fieldX: fieldX,
@@ -100,11 +75,11 @@ export default class App extends Component {
   }.bind(this);
 
   render() {
-    console.log('App state=', this.state);
+    console.log('this.state', this.state);
     const {start, gameStarted,
-      user1name, user1id, user1playerName, user1matrix, user1flot,
-      user2name, user2id, user2playerName, user2matrix, user2fieldX, user2fieldY, user2flot,
-      fieldSize, shipSize} = this.state;
+            user1name, user1id, user1playerName, user1matrix, user1flot,
+            user2name, user2id, user2playerName, user2matrix, user2fieldX, user2fieldY, user2flot,
+            fieldSize, shipSize} = this.state;
 
     return (
       <div className="wrap">
@@ -147,8 +122,8 @@ export default class App extends Component {
 
         <div id="text_btm" className="text-btm"></div>
 
-        {/* <Rules/> */}
-        {/* <PopupName/> */}
+        <Rules/>
+        <PopupName setAppState={this.setAppState} />
       </div>
     )
   }
