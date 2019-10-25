@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import './fonts/SegoePrint/fonts.css'
 import './style.css'
 import Field from './Field/'
 import StartGame from './StartGame'

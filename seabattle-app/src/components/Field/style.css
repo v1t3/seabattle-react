@@ -43,6 +43,10 @@
 	position: relative;
 }
 
+#field_user2 .ship {
+	display: none;
+}
+
 .top-nums {
 	display: flex;
 	font-weight: bold;
