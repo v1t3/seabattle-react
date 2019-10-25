@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import './fonts/SegoePrint/fonts.css'
 import './style.css'
 import Field from './Field/'
 import StartGame from './StartGame'
@@ -75,7 +76,7 @@ export default class App extends Component {
   }.bind(this);
 
   render() {
-    console.log('this.state', this.state);
+    // console.log('this.state', this.state);
     const {start, gameStarted,
             user1name, user1id, user1playerName, user1matrix, user1flot,
             user2name, user2id, user2playerName, user2matrix, user2fieldX, user2fieldY, user2flot,
