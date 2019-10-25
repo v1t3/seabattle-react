@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import Ship from './Ship'
+import Ship from './Ship' 
 
 export default class PlaceShips extends Component {
   state = {
