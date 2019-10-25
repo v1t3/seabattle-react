@@ -1,15 +1,27 @@
 
 /*** CONTENT ***/
 .field-wrap {
+	display: flex;
 	justify-content: center;
 	height: auto;
 	position: relative;
 	margin: 0 auto;
-	display: flex;
+}
+@media (max-width: 800px) {
+	.field-wrap {
+		flex-direction: column;
+    align-items: center;
+	}
 }
 
-.bfield2 {
-	margin-left: 30px;
+.bfield {
+	margin-bottom: 20px;
+}
+
+@media (min-width: 800px) {
+	.bfield2 {
+		margin-left: 30px;
+	}
 }
 
 .text-top {
