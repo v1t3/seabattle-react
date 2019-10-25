@@ -32,6 +32,7 @@ export default class App extends Component {
     user2flot: []
   }
   
+  // флаги запуска игры
   setStart = function() {
     try {
       if (this.state.start === false) this.setState({start: true});

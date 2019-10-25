@@ -313,10 +313,10 @@ export default class Controller extends React.Component {
 			}
 		}
 
-		// корабль расположен вертикально
+		// корабль вертикально
 		if (coords[0] > 0 && compTempShip.diry === 0) this.state.compShootMatrixAround.push([coords[0] - 1, coords[1]]);
 		if (coords[0] < 9 && compTempShip.diry === 0) this.state.compShootMatrixAround.push([coords[0] + 1, coords[1]]);
-		// корабль расположен горизонтально
+		// корабль горизонтально
 		if (coords[1] > 0 && compTempShip.dirx === 0) this.state.compShootMatrixAround.push([coords[0], coords[1] - 1]);
 		if (coords[1] < 9 && compTempShip.dirx === 0) this.state.compShootMatrixAround.push([coords[0], coords[1] + 1]);
 
