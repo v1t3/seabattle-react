@@ -25,7 +25,7 @@ export default class StartGame extends Component {
             setAppState, setGameStarted} = this.props;
     
     return (
-      <div className="control-btns" data-hidden="false">
+      <div className="control-btns start-btn" data-hidden="false">
         <span id="play" className="btn-play" data-hidden="true" onClick={this.playClick}>Играть</span>
 
         <Controller matrixUser1={matrixUser1}
