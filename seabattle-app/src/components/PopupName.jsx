@@ -16,7 +16,7 @@ export default class PopupName extends Component {
     event.preventDefault();
     this.setState({value: event.target.value});
   }
-
+  
   handleSubmit(event) {
     event.preventDefault();
     if (this.state.value !== '') this.props.setAppState('user1', 'playerName', this.state.value);
