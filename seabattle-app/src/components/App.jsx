@@ -33,23 +33,23 @@ export default class App extends Component {
   }
   
   // флаги запуска игры
-  setStart = function() {
+  setStart = () => {
     try {
       if (this.state.start === false) this.setState({start: true});
     } catch(err) {
       console.error(err);
     }
-  }.bind(this);
+  }
 
-  setGameStarted = function() {
+  setGameStarted = () => {
     try {
       if (this.state.gameStarted === false) this.setState({gameStarted: true});
     } catch(err) {
       console.error(err);
     }
-  }.bind(this);
+  }
   
-	setAppState = function(username, param, data) {
+	setAppState = (username, param, data) => {
     try {
       let userState = username + param;
 
@@ -59,9 +59,9 @@ export default class App extends Component {
     } catch(err) {
       console.error(err);
     }
-  }.bind(this);
+  }
 
-	setUserPos = function(username, fieldX, fieldY, fieldRight, fieldBtm) {
+	setUserPos = (username, fieldX, fieldY, fieldRight, fieldBtm) => {
     try {
       if (username === 'user2') {
         this.setState({
@@ -74,7 +74,7 @@ export default class App extends Component {
     } catch(err) {
       console.error(err);
     }
-  }.bind(this);
+  }
 
   render() {
     // console.log('this.state', this.state);
