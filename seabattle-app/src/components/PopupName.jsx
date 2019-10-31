@@ -24,6 +24,7 @@ export default class PopupName extends Component {
   }
 
   render() {
+    // добавить возможность закрыть окно по Esc
     return (
       <div id="popup" className="popup" data-hidden="false">
         <div className="popup-wrap">
