@@ -76,6 +76,7 @@ export default class Field extends Component {
           <p className={'btext btext' + playerNum}>
             Игрок {playerNum}: 
 						<span id={'username' + playerNum}> {playerName}</span>
+            {/* добавить иконку изменения имени */}
           </p>
         <div className="field field-user">
           <div className="top-nums">

@@ -154,11 +154,20 @@ export default class Controller extends React.Component {
 					userfield2.removeEventListener('click', self.shoot.bind(this) );
 					
 					//// заменить на смену состояния и очистку поля
-					self.showServiseText(text + ' <a id="one_more_time" href="#" onClick="window.location.reload()">Ещё раз!</a>');
+					self.showServiseText(text + ' <a id="one_more_time" href="#" >Ещё раз!</a>');
 
-					// вставить переключение состояния отображения кораблей компа
-					// 
-					// 
+					// сброс состояния игры, запуск новой
+					document.querySelector('#one_more_time').addEventListener('click', () => {
+						this.props.setAppState('', 'start', false);
+						this.props.setAppState('', 'gameStarted', false);
+						
+						document.querySelector('#control_btns').setAttribute('data-hidden', false);
+						this.showServiseText('');
+						let field2 = document.querySelector('#field_user2');
+						while (field2.firstChild) {
+							field2.removeChild(field2.firstChild);
+						}
+					});
 
 				} else {
 					// бой продолжается
@@ -418,7 +427,7 @@ export default class Controller extends React.Component {
 		}
 	}
 
-	showServiseText = function(text) {
+	showServiseText(text) {
 		let srvText = document.getElementById('text_btm');
 		srvText.innerHTML = text;
 		// setTimeout("srvText.innerHTML = ''", 1000);

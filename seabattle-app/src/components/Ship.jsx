@@ -31,8 +31,9 @@ export default class Ship extends Component {
       if (player === 'user1') this.showShip();
 
       // когда созданы все корабли (10 шт), показываем кнопку запуска игры
-      if (this.props.flot.length === 10) {
-      	document.getElementById('play').setAttribute('data-hidden', 'false');
+      if (this.props.flot.length === 10 && player === 'user1') {
+      	document.querySelector('.start-btn').setAttribute('data-hidden', 'false');
+      	document.querySelector('#play').setAttribute('data-hidden', 'false');
       }
     } catch(err) {
       console.error(err);
