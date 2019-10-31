@@ -1,19 +1,19 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "25bc7bf4c966b8befff3d6bfe72e2cdb",
+    "revision": "1c13b5f79c10013280cdd6c49fdc7002",
     "url": "/seabattle-react/index.html"
   },
   {
-    "revision": "892a15e5e61495004e2f",
+    "revision": "9ac318f20b5f9a8fceaf",
     "url": "/seabattle-react/static/css/main.d2c54fb8.chunk.css"
   },
   {
-    "revision": "a8bcf4e8f2b2b77f1736",
-    "url": "/seabattle-react/static/js/2.23fb3485.chunk.js"
+    "revision": "c2795c93c691cc43ee01",
+    "url": "/seabattle-react/static/js/2.f6f1313a.chunk.js"
   },
   {
-    "revision": "892a15e5e61495004e2f",
-    "url": "/seabattle-react/static/js/main.a089aaa5.chunk.js"
+    "revision": "9ac318f20b5f9a8fceaf",
+    "url": "/seabattle-react/static/js/main.6598bb14.chunk.js"
   },
   {
     "revision": "38bef686851ef7d80d36",
